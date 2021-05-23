@@ -1,0 +1,36 @@
+import discord
+from discord.ext import commands
+
+class Info(commands.Cog):
+    
+    def __init__(self, client):
+        self.client = client
+
+    @commands.command(aliases=["help"])
+    async def ajuda(self, ctx):
+        icon = ctx.guild.icon_url_as(format='webp')
+        cor = 0xff0000
+        url = "https://fenbrasil.net"
+        embed=discord.Embed(color=cor)
+        embed.set_author(name="Informações sobre: ", value=self.client.name , url=url)
+        embed.set_thumbnail(url=icon)
+        embed.add_field(name="Você foi expulso do servidor pelo motivo:" ,inline=False)
+        embed.set_footer(text="Você tem direito a recorrer esta punição em nosso site.")
+        await ctx.send(embed=embed)
+
+    @commands.command(aliases=["rules"])
+    async def regras(self, ctx):
+        icon = ctx.guild.icon_url_as(format='webp')
+        cor = 0xff0000
+        url = "https://fenbrasil.net"
+        embed=discord.Embed(color=cor)
+        embed.set_author(name="Fênix Empire Network Brasil", url=url)
+        embed.set_thumbnail(url=icon)
+        embed.add_field(name="As regras deste servidor do Discord podem ser lidas em " ,inline=False)
+        embed.set_footer(text="Você tem direito a recorrer esta punição em nosso site.")
+        await ctx.send(embed=embed)
+
+
+
+def setup(client):
+    client.add_cog(Info(client))
