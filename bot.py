@@ -4,16 +4,19 @@ import os
 import logging
 from discord.ext import commands
 
-file = open(".\data\settings.json")
+file = open("./data/settings.json")
 data = json.loads(file.read())
 token = data["data"][0]["bot_token"]
 autor = data["data"][0]["author_name"]
 id_autor = data["data"][0]["author_id"]
 
-client = commands.Bot(command_prefix = '?', status=discord.Status.online, activity=discord.Activity(type=discord.ActivityType.watching, name="Fênix Empire Network em www.fenbrasil.net"))
+intents = discord.Intents.default()
+intents.members = True
+
+client = commands.Bot(command_prefix = '?', intents = intents, status=discord.Status.online, activity=discord.Activity(type=discord.ActivityType.watching, name="Fênix Empire Network em www.fenbrasil.net"))
 client.remove_command('help')
 
-# Comandos de carregamento, desativação e recarga dos módulos@r47orr
+# Comandos de carregamento, desativação e recarga dos módulos
 
 @client.command(aliases=['carregar', 'ativar'])
 async def load(ctx, extension):

@@ -6,6 +6,38 @@
                 "status_delay": "5"
             }
         ],
+        "activities": [
+            {
+                "1": "discord.Game('Jailbreak on-line em ip.fenbrasil:27050')",
+                "2": "discord.Game('Jailbreak offline.')",
+                "3": "discord.Game('Jailbreak em manutenção.')",
+                "4": "discord.Game('Jailbreak reiniciando.')",
+                "5": "discord.Game('Zombie Plague on-line em ip.fenbrasil:27016')",
+                "6": "discord.Game('Zombie Plague offline.')",
+                "7": "discord.Game('Zombie Plague em manutenção.')",
+                "8": "discord.Game('Zombie Plague reiniciando.')",
+                "9": "discord.Game('TTT on-line em ip.fenbrasil:27015')",
+                "10": "discord.Game('TTT offline.')",
+                "11": "discord.Game('TTT em manutenção.')",
+                "12": "discord.Game('TTT reiniciando.')"
+            }
+        ],
+        "status": [
+            {
+                "1": "discord.Status.online",
+                "2": "discord.Status.do_not_disturb",
+                "3": "discord.Status.do_not_disturb",
+                "4": "discord.Status.idle",
+                "5": "discord.Status.online",
+                "6": "discord.Status.do_not_disturb",
+                "7": "discord.Status.do_not_disturb",
+                "8": "discord.Status.idle",
+                "9": "discord.Status.online",
+                "10": "discord.Status.do_not_disturb",
+                "11": "discord.Status.do_not_disturb",
+                "12": "discord.Status.idle"
+            }
+        ],
         "logs": [
             {
                 "logs_channel_id": "777447508712488980"

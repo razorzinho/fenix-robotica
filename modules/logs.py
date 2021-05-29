@@ -21,7 +21,7 @@ class Logs(commands.Cog):
         horario = now.strftime("às %H:%M:%S em %d/%m/%Y")
         logs_channel = self.client.get_channel(channel_id)
         # Se não for uma mensagem do canal de logs ou do sistema (automática do Discord), registrar no logS
-        if not message.channel == logs_channel and not message.is_system() and message.author != self.client:
+        if not message.channel == logs_channel and not message.is_system() and not message.author == self.client:
             msg_date = message.created_at.strftime("às %H:%M:%S em %d/%m/%Y")
             cor = 0xff0000
             url = message.jump_url
@@ -50,12 +50,12 @@ class Logs(commands.Cog):
         user_date = member.joined_at.strftime("%d/%m/%Y")
         now = datetime.now()
         horario = now.strftime("às %H:%M:%S em %d/%m/%Y")
-        icon = member.avatar_url
+        pfp = member.avatar_url
         cor = 0x0000ff
         url = "https://fenbrasil.net"
         embed=discord.Embed(color=cor)
         embed.set_author(name="LOGS FEN", url=url)
-        embed.set_thumbnail(url=icon)
+        embed.set_thumbnail(url=pfp)
         embed.add_field(name=f"O usuário {member.mention} entrou no servidor.", value=f"Criado em {user_date}", inline=False)
         embed.set_footer(text=f"ID: {member.id} | Data: {horario}")
         await logs_channel.send(embed=embed)
