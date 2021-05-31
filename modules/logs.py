@@ -15,15 +15,16 @@ class Logs(commands.Cog):
     def __init__(self, client):
         self.client = client    
 
+    # Logs de mensagens
     @commands.Cog.listener()
     async def on_message(self, message):
         now = datetime.now()
         horario = now.strftime("às %H:%M:%S em %d/%m/%Y")
         logs_channel = self.client.get_channel(channel_id)
-        # Se não for uma mensagem do canal de logs ou do sistema (automática do Discord), registrar no logS
-        if not message.channel == logs_channel and not message.is_system() and message.author != self.client:
+        # Se não for uma mensagem do canal de logs, do bot ou do sistema (automática do Discord), registrar no logS
+        if not message.channel == logs_channel and not message.is_system() and not message.author == self.client.user:
             msg_date = message.created_at.strftime("às %H:%M:%S em %d/%m/%Y")
-            cor = 0xff0000
+            cor = int(data["settings"][0]["logs"][0]["message_log_colour"])
             url = message.jump_url
             mensagem = message.content
             autor = message.author
@@ -44,22 +45,25 @@ class Logs(commands.Cog):
             embed.set_footer(text=f"ID da mensagem: {message.id} | {horario}")
             await logs_channel.send(embed=embed)
 
+    # Logs de entrada de membros
     @commands.Cog.listener()
     async def on_member_join(self, member):
         logs_channel = self.client.get_channel(channel_id)
         user_date = member.joined_at.strftime("%d/%m/%Y")
         now = datetime.now()
         horario = now.strftime("às %H:%M:%S em %d/%m/%Y")
-        icon = member.avatar_url
-        cor = 0x0000ff
+        pfp = member.avatar_url
+        cor = int(data["settings"][0]["logs"][0]["member_join_colour"])
         url = "https://fenbrasil.net"
         embed=discord.Embed(color=cor)
-        embed.set_author(name="LOGS FEN", url=url)
-        embed.set_thumbnail(url=icon)
-        embed.add_field(name=f"O usuário {member.mention} entrou no servidor.", value=f"Criado em {user_date}", inline=False)
+        embed.set_author(name="Novo membro", url=url)
+        embed.set_thumbnail(url=pfp)
+        embed.add_field(name=member.mention, value=" entrou no servidor", inline=False)
+        embed.add_field(name="Data de criação da conta: ", value=user_date, inline=False)
         embed.set_footer(text=f"ID: {member.id} | Data: {horario}")
         await logs_channel.send(embed=embed)
 
+    # Logs de saída de membros
     @commands.Cog.listener()
     async def on_member_remove(self, member):
         logs_channel = self.client.get_channel(channel_id)
@@ -67,13 +71,106 @@ class Logs(commands.Cog):
         now = datetime.now()
         horario = now.strftime("às %H:%M:%S em %d/%m/%Y")
         icon = member.avatar_url
-        cor = 0x0000ff
+        cor = int(data["settings"][0]["logs"][0]["member_leave_colour"])
         url = "https://fenbrasil.net"
         embed=discord.Embed(color=cor)
-        embed.set_author(name="LOGS FEN", url=url)
+        embed.set_author(name="Um membro saiu", url=url)
         embed.set_thumbnail(url=icon)
-        embed.add_field(name=f"O usuário {member.mention} deixou o servidor.", value=f"Criado em {user_date}", inline=False)
+        embed.add_field(name=f"{member.mention} ", value="deixou o servidor", inline=True)
+        embed.add_field(name="Data de criação da conta: ", value=user_date, inline=True)
         embed.set_footer(text=f"ID: {member.id} | Data: {horario}")
+        await logs_channel.send(embed=embed)
+
+
+    # Logs de banimento
+    @commands.Cog.listener()
+    async def on_member_ban(self, guild, member):
+        logs_channel = self.client.get_channel(channel_id)
+        now = datetime.now()
+        horario = now.strftime("às %H:%M:%S em %d/%m/%Y")
+        banned = member.avatar_url
+        author = self.client.avatar_url
+        cor = int(data["settings"][0]["logs"][0]["member_ban_colour"])
+        url = "htttps://fenbrasil.net"
+        embed=discord.Embed(color=cor)
+        embed.set_author(name="Membro banido", url=url, icon_url=banned)
+        embed.set_thumbnail(url=author)
+        embed.add_field(name=f"{member.mention} ", value="foi banido do servidor", inline=False)
+        embed.add_field(name="Motivo do banimento: ", value="algum motivo...", inline=True)
+        embed.set_footer(text=f"ID do banido: {member.id} | Data: {horario}")
+        await logs_channel.send(embed=embed)
+
+    # Logs de desbanimento
+    @commands.Cog.listener()
+    async def on_member_unban(self, guild, member):
+        logs_channel = self.client.get_channel(channel_id)
+        now = datetime.now()
+        horario = now.strftime("às %H:%M:%S em %d/%m/%Y")
+        banned = member.avatar_url
+        author = self.client.avatar_url
+        cor = int(data["settings"][0]["logs"][0]["member_unban_colour"])
+        url = "htttps://fenbrasil.net"
+        embed=discord.Embed(color=cor)
+        embed.set_author(name="Membro desbanido", url=url, icon_url=banned)
+        embed.set_thumbnail(url=author)
+        embed.add_field(name=member.mention, value=" foi desbanido do servidor", inline=True)
+        embed.set_footer(text=f"ID do banido: {member.id} | Data: {horario}")
+        await logs_channel.send(embed=embed)
+
+    # Logs de criação de convites
+    @commands.Cog.listener()
+    async def on_invite_create(self, invite):
+        logs_channel = self.client.get_channel(channel_id)
+        now = datetime.now()
+        horario = now.strftime("às %H:%M:%S em %d/%m/%Y")
+        icon = invite.guild.icon_url
+        cor = int(data["settings"][0]["logs"][0]["invite_created_colour"])
+        url = invite.url
+        autor = invite.inviter
+        embed=discord.Embed(color=cor)
+        embed.set_author(name="Convite criado", url=url)
+        embed.set_thumbnail(url=icon)
+        embed.add_field(name=f"O convite {invite}", value=" foi criado.", inline=True)
+        embed.add_field(name="Criado por ", value=autor, inline=False)
+        embed.add_field(name="Limite de usos:", value=invite.max_uses, inline=False)
+        # Verifica se o convite é permanente (duração automática)
+        if invite.max_age == 0:
+            validade = 'Permanente'
+        else:
+            validade = invite.max_age/60
+        embed.add_field(name="Duração limite:", value=f'{validade} minutos', inline=False)
+        # Verifica se o convite removerá o membro do servidor depois de certo tempo
+        if invite.temporary:
+            temporario = 'Sim.'
+        else: 
+            temporario = 'Não.'
+        embed.add_field(name="Convite de estadia temporária? ", value=temporario, inline=False)
+        # Verifica se o convite ainda está ativo
+        if invite.revoked:
+            ativo = 'Não.'
+        else:
+            ativo = 'Sim.'
+        embed.add_field(name="Ativo? ", value=ativo, inline=False)
+        embed.set_footer(text=f"Data: {horario}")
+        await logs_channel.send(embed=embed)
+
+    # Logs de remoção de convites
+    @commands.Cog.listener()
+    async def on_invite_delete(self, invite):
+        logs_channel = self.client.get_channel(channel_id)
+        now = datetime.now()
+        horario = now.strftime("às %H:%M:%S em %d/%m/%Y")
+        created = invite.created_at.strftime("às %H:%M:%S em %d/%m/%Y")
+        icon = invite.guild.icon_url
+        cor = int(data["settings"][0]["logs"][0]["invite_deleted_colour"])
+        url = invite.url
+        embed=discord.Embed(color=cor)
+        embed.set_author(name="Convite apagado", url=url)
+        embed.set_thumbnail(url=icon)
+        embed.add_field(name=f"O convite {invite.id} para o canal {invite.channel}", value=" foi apagado.", inline=True)
+        embed.add_field(name="Data de criação: ", value=created, inline=False)
+        embed.add_field(name=f"Usado {invite.uses}", value=" vezes antes de ser apagado.", inline=False)
+        embed.set_footer(text=f"Data: {horario}")
         await logs_channel.send(embed=embed)
 
 def setup(client):

@@ -78,28 +78,16 @@ class Mod(commands.Cog):
         if (user.name, user.discriminator) == (member_name, member_discriminator):
             await ctx.guild.unban(user)
             autor = ctx.message.author
-            user_id = self.client.get_user(user.id)
-            user_dm = self.client.fetch_user(user_id)
-            icon = ctx.guild.icon_url
-            cor = 0xff0000
-            url = "https://fenbrasil.net"
-            embed=discord.Embed(color=cor)
-            embed.set_author(name="Fênix Empire Network Brasil", url=url)
-            embed.set_thumbnail(url=icon)
-            embed.add_field(name="Você foi desbanido do servidor.", value="Você pode usar o comando ativo do servidor para retornar.",inline=False)
-            embed.add_field(name="Você foi desbanido por ", value=autor, inline=True)
-            embed.set_footer(text="Quaisquer dúvidas, entre em nosso site.")
-            await user_dm.send(embed=embed)
             await ctx.send(f'O usuário {user.mention} foi desbanido do servidor.')
             return
 
-    #@unban.error
-    #async def unban_error(self, ctx, error):
-    #    if isinstance(error, commands.MissingPermissions):
-    #        await ctx.channel.purge(limit=1)
-    #        await ctx.send(f'**Você não tem permissão para usar este comando, {ctx.author.mention}.**', delete_after=5.0)
-    #    elif  isinstance(error, commands.MissingRequiredArgument()):
-    #        await ctx.send(f'**{ctx.message.author.mention}, você deve especificar o nome do usuário que será desbanido.**', delete_after=5.0)
+    @unban.error
+    async def unban_error(self, ctx, error):
+        if isinstance(error, commands.MissingPermissions):
+            await ctx.channel.purge(limit=1)
+            await ctx.send(f'**Você não tem permissão para usar este comando, {ctx.author.mention}.**', delete_after=5.0)
+        elif  isinstance(error, commands.MissingRequiredArgument()):
+            await ctx.send(f'**{ctx.message.author.mention}, você deve especificar o nome do usuário que será desbanido.**', delete_after=5.0)
 
 def setup(client):
     client.add_cog(Mod(client))

@@ -6,9 +6,65 @@
                 "status_delay": "5"
             }
         ],
+        "activities": [
+            {
+                "1": "Jailbreak on-line em ip.fenbrasil:27050",
+                "2": "Jailbreak offline.",
+                "3": "Jailbreak em manutenção.",
+                "4": "Jailbreak reiniciando.",
+                "5": "Zombie Plague on-line em ip.fenbrasil:27016",
+                "6": "Zombie Plague offline.",
+                "7": "Zombie Plague em manutenção.",
+                "8": "Zombie Plague reiniciando.",
+                "9": "TTT on-line em ip.fenbrasil:27015",
+                "10": "TTT offline.",
+                "11": "TTT em manutenção.",
+                "12": "TTT reiniciando."
+            }
+        ],
+        "status": [
+            {
+                "1": "discord.Status.online",
+                "2": "discord.Status.do_not_disturb",
+                "3": "discord.Status.do_not_disturb",
+                "4": "discord.Status.idle",
+                "5": "discord.Status.online",
+                "6": "discord.Status.do_not_disturb",
+                "7": "discord.Status.do_not_disturb",
+                "8": "discord.Status.idle",
+                "9": "discord.Status.online",
+                "10": "discord.Status.do_not_disturb",
+                "11": "discord.Status.do_not_disturb",
+                "12": "discord.Status.idle"
+            }
+        ],
+        "type": [
+            {
+                "1": "discord.Game",
+                "2": "discord.Game",
+                "3": "discord.Game",
+                "4": "discord.Game",
+                "5": "discord.Game",
+                "6": "discord.Game",
+                "7": "discord.Game",
+                "8": "discord.Game",
+                "9": "discord.Game",
+                "10": "discord.Game",
+                "11": "discord.Game",
+                "12": "discord.Game"
+            }
+        ],
         "logs": [
             {
-                "logs_channel_id": "777447508712488980"
+                "logs_channel_id": "777447508712488980",
+                "message_log_colour": "16776960",
+                "message_deleted_colour": "16537091",
+                "member_join_colour": "61680",
+                "member_leave_colour": "16537091",
+                "member_ban_colour": "16711680",
+                "member_unban_colour": "16776960",
+                "invite_created_colour": "16776960",
+                "invite_deleted_colour": "16711680"
             }
         ],
         "tickets": [
