@@ -12,6 +12,8 @@ id_autor = data["data"][0]["author_id"]
 
 intents = discord.Intents.default()
 intents.members = True
+intents.bans = True
+intents.invites = True
 
 client = commands.Bot(command_prefix = '?', intents = intents, status=discord.Status.online, activity=discord.Activity(type=discord.ActivityType.watching, name="Fênix Empire Network em www.fenbrasil.net"))
 client.remove_command('help')

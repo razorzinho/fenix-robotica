@@ -19,8 +19,9 @@ class Status(commands.Cog):
     async def change_status(self):
         activity = cycle([data["settings"][0]["activities"][0]])
         status = cycle([data["settings"][0]["status"][0]])
+        type = cycle([data["settings"][0]["type"][0]])
         print(activity + status)
-        await self.client.change_presence(status=next(status), activity=next(activity))
+        await self.client.change_presence(status=next(status), activity=next(type)+"("+next(activity)+")")
         self.client.change_status.start
 
 def setup(client):
