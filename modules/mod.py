@@ -23,14 +23,15 @@ class Mod(commands.Cog):
     async def kick(self, ctx, member : discord.Member, *, reason):
         # Mensagem de aviso ao membro que foi punido:
         autor = ctx.message.author
+        autor_pfp = autor.avatar_url
         icon = ctx.guild.icon_url
         cor = 0xff0000
         url = "https://fenbrasil.net"
         embed=discord.Embed(color=cor)
-        embed.set_author(name="Fênix Empire Network Brasil", url=url)
-        embed.set_thumbnail(url=icon)
+        embed.set_author(name="Fênix Empire Network Brasil", url=url, icon_url=icon)
+        embed.set_thumbnail(url=autor_pfp)
         embed.add_field(name="Você foi expulso do servidor pelo motivo:", value=reason ,inline=False)
-        embed.add_field(name="Quem te expulsou: ", value=autor, inline=True)
+        embed.add_field(name="Quem te expulsou: ", value=autor.mention, inline=True)
         embed.set_footer(text="Você tem direito a recorrer esta punição em nosso site.")
         await member.send(embed=embed)
         await member.kick(reason=reason)
@@ -47,13 +48,14 @@ class Mod(commands.Cog):
     @commands.has_permissions(kick_members=True, ban_members=True)
     async def ban(self, ctx, member:discord.Member, *, reason):
         autor = ctx.message.author
+        pfp_autor = autor.avatar_url
         icon = ctx.guild.icon_url
         cor = 0xff0000
         embed=discord.Embed(color=cor)
-        embed.set_author(name="Fênix Empire Network Brasil")
-        embed.set_thumbnail(url=icon)
+        embed.set_author(name="Fênix Empire Network Brasil", icon_url=icon)
+        embed.set_thumbnail(url=pfp_autor)
         embed.add_field(name="Você foi banido do servidor pelo motivo:", value=reason ,inline=False)
-        embed.add_field(name="Quem te baniu: ", value=autor, inline=True)
+        embed.add_field(name="Quem te baniu: ", value=autor.mention, inline=True)
         embed.set_footer(text="Você tem direito a recorrer esta punição em nosso site.")
         await member.send(embed=embed)
         await member.ban(reason=reason)
@@ -79,6 +81,7 @@ class Mod(commands.Cog):
             await ctx.guild.unban(user)
             autor = ctx.message.author
             await ctx.send(f'O usuário {user.mention} foi desbanido do servidor.')
+            # O envio de embed para o usuário desbanido foi removido pois parece não ser possível.
             return
 
     @unban.error

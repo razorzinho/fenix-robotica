@@ -18,7 +18,6 @@ intents.bans = True
 intents.invites = True
 
 client = commands.Bot(command_prefix = '?', intents=intents, status=discord.Status.online, activity=discord.Activity(type=discord.ActivityType.watching, name="Fênix Empire Network em www.fenbrasil.net"))
-client.remove_command('help')
 
 # Comandos de carregamento, desativação e recarga dos módulos
 

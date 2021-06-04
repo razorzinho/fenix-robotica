@@ -57,12 +57,14 @@
         "logs": [
             {
                 "logs_channel_id": "777447508712488980",
+                "member_logs_channel_id": "777439730915999784",
+                "online_colour": "65280",
                 "message_log_colour": "16776960",
-                "message_deleted_colour": "16537091",
+                "message_deleted_colour": "16711680",
                 "member_join_colour": "61680",
                 "member_leave_colour": "16537091",
                 "member_ban_colour": "16711680",
-                "member_unban_colour": "16776960",
+                "member_unban_colour": "16537091",
                 "invite_created_colour": "16776960",
                 "invite_deleted_colour": "16711680"
             }
