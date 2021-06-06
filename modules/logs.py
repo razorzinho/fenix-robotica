@@ -16,18 +16,6 @@ class Logs(commands.Cog):
     def __init__(self, client):
         self.client = client   
 
-    @commands.Cog.listener()
-    async def on_ready(self):
-        logs_channel = self.client.get_channel(logs_channel_id)
-        cor = int(data["settings"][0]["logs"][0]["online_colour"])
-        id_bot = self.client.id
-        icon = self.client.guild.icon_url
-        embed=discord.Embed(color=cor)
-        embed.set_author(name="Fênix Empire Network Brasil", url="https://fenbrasil.net", icon_url=icon)
-        embed.add_field(name=self.client.name, value=' está on-line.', inline=True)
-        embed.set_footer(text=f'ID do bot: {id_bot}')
-        await logs_channel.send(embed=embed)
-
     # Logs de mensagens
     @commands.Cog.listener()
     async def on_message(self, message):
