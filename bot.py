@@ -1,16 +1,23 @@
 import discord
-import json
+#import json
 import os
 import logging
 from discord.ext import commands
 
 # Carregar dados principais do bot
 
-file = open("./data/settings.json")
-data = json.loads(file.read())
-token = data["data"][0]["bot_token"]
-autor = data["data"][0]["author_name"]
-id_autor = data["data"][0]["author_id"]
+from data import settings
+bot_token = settings.bot_token
+author = settings.author_name
+author_id = settings.author_id
+
+# Antigamente feito com .json, porém parece não ser uma boa opção em questões de segurança.
+
+#file = open("./data/settings.json")
+#data = json.loads(file.read())
+#token = data["data"][0]["bot_token"]
+#autor = data["data"][0]["author_name"]
+#id_autor = data["data"][0]["author_id"]
 
 intents = discord.Intents.default()
 intents.members = True
@@ -47,7 +54,7 @@ for filename in os.listdir('./modules'):
 
 @client.event
 async def on_ready():
-    print(f'Bot {client.user} on-line. \nCriado por {autor} -> {id_autor}')
+    print(f'Bot {client.user} on-line. \nCriado por {author} -> {author_id}')
 
 # Logs do terminal do bot:
 
@@ -57,4 +64,4 @@ handler = logging.FileHandler(filename='terminal.log', encoding='utf-8', mode='w
 handler.setFormatter(logging.Formatter('%(asctime)s:%(levelname)s:%(name)s: %(message)s'))
 logger.addHandler(handler)
 
-client.run(token)
+client.run(bot_token)

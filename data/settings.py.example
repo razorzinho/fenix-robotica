@@ -1,0 +1,8 @@
+# Arquivo base para as configurações hard-coded do bot.
+# Neste arquivo ficarão armazenadas variáveis importantes para o arquivo principal do bot, por ora.
+# Para utilizá-lo, faça uma cópia deste arquivo como settings.py.
+# Este arquivo foi criado com o intuito de fazer o código do bot mais seguro.
+
+bot_token = ''
+author_name = ''
+author_id = ''
