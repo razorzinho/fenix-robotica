@@ -1,5 +1,4 @@
 import discord
-#import json
 import os
 import logging
 from discord.ext import commands
@@ -10,14 +9,6 @@ from data import settings
 bot_token = settings.bot_token
 author = settings.author_name
 author_id = settings.author_id
-
-# Antigamente feito com .json, porém parece não ser uma boa opção em questões de segurança.
-
-#file = open("./data/settings.json")
-#data = json.loads(file.read())
-#token = data["data"][0]["bot_token"]
-#autor = data["data"][0]["author_name"]
-#id_autor = data["data"][0]["author_id"]
 
 intents = discord.Intents.default()
 intents.members = True
