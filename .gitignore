@@ -1,1 +1,6 @@
-./modules/__pycache__/
+modules/__pycache__/
+data/__pycache__/
+storage/__pycache__/
+terminal.log
+cache.txt
+settings.py
