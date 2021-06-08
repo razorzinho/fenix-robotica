@@ -79,7 +79,6 @@ class Mod(commands.Cog):
             user = ban_entry.user
         if (user.name, user.discriminator) == (member_name, member_discriminator):
             await ctx.guild.unban(user)
-            autor = ctx.message.author
             await ctx.send(f'O usuário {user.mention} foi desbanido do servidor.')
             # O envio de embed para o usuário desbanido foi removido pois parece não ser possível.
             return

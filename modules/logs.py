@@ -29,22 +29,58 @@ class Logs(commands.Cog):
             url = message.jump_url
             mensagem = message.content
             autor = message.author
+            icon = autor.avatar_url
+            footer = message.guild.icon_url
             embed=discord.Embed(color=cor)
-            embed.set_author(name="Mensagem enviada", url=url)
+            embed.set_author(name="Mensagem enviada", url=url, icon_url=icon)
             embed.add_field(name="Autor da mensagem:", value=autor.mention, inline=True)
-            embed.add_field(name="Mensagem:", value=mensagem, inline=False)
-            #embed.add_field(name="Enviada em: ", value=msg_date, inline=True)
-            # Anexar qualquer imagem ou arquivo à mensagem de log
-            if message.attachments:
-                atch = message.attachments.to_file
-                embed.set_thumbnail(url=atch)
-            # Se não, usar o ícone do servidor na mensagem de log
-            else:
-                icon = message.guild.icon_url
-                embed.set_thumbnail(url=icon)
+            embed.add_field(name="Mensagem:", value=f"```{mensagem}```", inline=False)
             embed.add_field(name="Enviada no canal: ", value=f"<#{message.channel.id}>", inline=True)
-            embed.set_footer(text=f"ID da mensagem: {message.id} | {horario}")
+            embed.add_field(name="Arquivos enviados: ", value=message.attachments, inline=False)
+            embed.set_footer(text=f"ID da mensagem: {message.id} | {horario}", icon_url=footer)
             await logs_channel.send(embed=embed)
+
+    # Logs de mensagens editadas
+    @commands.Cog.listener()
+    async def on_message_edit(self, before, after):
+        now = datetime.now()
+        horario = now.strftime("às %H:%M:%S em %d/%m/%Y")
+        logs_channel = self.client.get_channel(logs_channel_id)
+        autor = before.author
+        url = before.jump_url
+        icon = before.author.avatar_url
+        footer = before.guild.icon_url
+        cor = int(data["settings"][0]["logs"][0]["message_edited_colour"])
+        embed = discord.Embed(color=cor)
+        embed.set_author(name="Mensagem editada", url=url, icon_url=icon)
+        embed.add_field(name="Autor da mensagem: " , value=autor.mention , inline=True)
+        embed.add_field(name="Mensagem original: ", value=f"```{before.content}```", inline=False)
+        embed.add_field(name="Arquivos enviados: ", value=before.attachments, inline=False)
+        embed.add_field(name="Mensagem nova: ", value=f"```{after.content}```")
+        embed.add_field(name="Arquivos enviados: ", value=after.attachments, inline=False)
+        embed.add_field(name="Canal da mensagem: ", value=f"<#{before.channel.id}>", inline=True)
+        embed.set_footer(text=f"ID da mensagem: {before.id} | Data: {horario}", icon_url=footer)
+        await logs_channel.send(embed=embed)
+
+
+    # Logs de mensagens apagadas
+    @commands.Cog.listener()
+    async def on_message_delete(self, message):
+        now = datetime.now()
+        horario = now.strftime("às %H:%M:%S em %d/%m/%Y")
+        logs_channel = self.client.get_channel(logs_channel_id)
+        autor = message.author
+        icon = message.author.avatar_url
+        footer = message.guild.icon_url
+        cor = int(data["settings"][0]["logs"][0]["message_deleted_colour"])
+        embed = discord.Embed(color=cor)
+        embed.set_author(name="Mensagem apagada", url=message.jump_url, icon_url=icon)
+        embed.add_field(name="Autor da mensagem:" , value=autor.mention , inline=True)
+        embed.add_field(name="Conteúdo da mensagem:", value=f"```{message.content}```", inline=False)
+        embed.add_field(name="Arquivos enviados:", value=message.attachments, inline=False)
+        embed.add_field(name="Enviada no canal: ", value=f"<#{message.channel.id}>", inline=True)
+        embed.set_footer(text=f"ID da mensagem: {message.id} | Data: {horario}", icon_url=footer)
+        await logs_channel.send(embed=embed)
 
     # Logs de entrada de membros
     @commands.Cog.listener()
@@ -73,6 +109,7 @@ class Logs(commands.Cog):
         now = datetime.now()
         horario = now.strftime("às %H:%M:%S em %d/%m/%Y")
         icon = member.avatar_url
+        footer = member.guild.icon_url
         cor = int(data["settings"][0]["logs"][0]["member_leave_colour"])
         url = "https://fenbrasil.net"
         user = member.mention
@@ -81,7 +118,7 @@ class Logs(commands.Cog):
         embed.set_thumbnail(url=icon)
         embed.add_field(name='O usuário', value=f" {user} deixou o servidor", inline=True)
         embed.add_field(name="Data de criação da conta: ", value=user_date, inline=False)
-        embed.set_footer(text=f"ID: {member.id} | Data: {horario}")
+        embed.set_footer(text=f"ID: {member.id} | Data: {horario}", icon_url=footer)
         await logs_channel.send(embed=embed)
 
 
@@ -93,6 +130,7 @@ class Logs(commands.Cog):
         horario = now.strftime("às %H:%M:%S em %d/%m/%Y")
         banned = member.avatar_url
         author = guild.icon_url
+        footer = member.guild.icon_url
         cor = int(data["settings"][0]["logs"][0]["member_ban_colour"])
         url = "https://fenbrasil.net"
         user = member.mention
@@ -101,7 +139,7 @@ class Logs(commands.Cog):
         embed.set_thumbnail(url=author)
         embed.add_field(name="O usuário ", value=f"{user} foi banido do servidor", inline=True)
         embed.add_field(name="Motivo do banimento: ", value="algum motivo...", inline=True)
-        embed.set_footer(text=f"ID do usuário banido: {member.id} | Data: {horario}")
+        embed.set_footer(text=f"ID do usuário banido: {member.id} | Data: {horario}", icon_url=footer)
         await logs_channel.send(embed=embed)
 
     # Logs de desbanimento
@@ -112,6 +150,7 @@ class Logs(commands.Cog):
         horario = now.strftime("às %H:%M:%S em %d/%m/%Y")
         banned = member.avatar_url
         author = guild.icon_url
+        footer = member.guild.icon_url
         cor = int(data["settings"][0]["logs"][0]["member_unban_colour"])
         url = "https://fenbrasil.net"
         user = member.mention
@@ -119,7 +158,7 @@ class Logs(commands.Cog):
         embed.set_author(name="Membro desbanido", url=url, icon_url=banned)
         embed.set_thumbnail(url=author)
         embed.add_field(name='O usuário', value=f" {user} foi desbanido do servidor", inline=True)
-        embed.set_footer(text=f"ID do usuário: {member.id} | Data: {horario}")
+        embed.set_footer(text=f"ID do usuário: {member.id} | Data: {horario}", icon_url=footer)
         await logs_channel.send(embed=embed)
 
     # Logs de criação de convites
@@ -129,6 +168,7 @@ class Logs(commands.Cog):
         now = datetime.now()
         horario = now.strftime("às %H:%M:%S em %d/%m/%Y")
         icon = invite.guild.icon_url
+        footer = invite.guild.icon_url
         cor = int(data["settings"][0]["logs"][0]["invite_created_colour"])
         url = invite.url
         autor = invite.inviter
@@ -157,7 +197,7 @@ class Logs(commands.Cog):
         else:
             ativo = 'Sim.'
         embed.add_field(name="Ativo? ", value=ativo, inline=True)
-        embed.set_footer(text=f"Data: {horario}")
+        embed.set_footer(text=f"Data: {horario}", icon_url=footer)
         await logs_channel.send(embed=embed)
 
     # Logs de remoção de convites
@@ -166,8 +206,9 @@ class Logs(commands.Cog):
         logs_channel = self.client.get_channel(logs_channel_id)
         now = datetime.now()
         horario = now.strftime("às %H:%M:%S em %d/%m/%Y")
-        created = invite.created_at
+        #created = invite.created_at
         icon = invite.guild.icon_url
+        footer = invite.guild.icon_url
         cor = int(data["settings"][0]["logs"][0]["invite_deleted_colour"])
         url = invite.url
         embed=discord.Embed(color=cor)
@@ -175,7 +216,7 @@ class Logs(commands.Cog):
         embed.set_thumbnail(url=icon)
         embed.add_field(name=f"O convite ", value=invite.id, inline=True)
         embed.add_field(name="Para o canal", value=f'<#{invite.channel.id}> foi apagado.', inline=True)
-        embed.set_footer(text=f"Data: {horario}")
+        embed.set_footer(text=f"Data: {horario}", icon_url=footer)
         await logs_channel.send(embed=embed)
 
 def setup(client):
