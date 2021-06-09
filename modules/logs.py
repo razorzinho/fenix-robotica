@@ -1,15 +1,11 @@
 import discord
-import json
-from pathlib import Path
 from discord.ext import commands
 from datetime import datetime
-
-dir = Path(__file__).absolute().parent
-file_location = dir / 'settings' / 'config.json'
-file = file_location.open()
-data = json.loads(file.read())
-logs_channel_id = int(data["settings"][0]["logs"][0]["logs_channel_id"])
-member_logs_channel_id = int(data["settings"][0]["logs"][0]["member_logs_channel_id"])
+from modules.storage import logs
+from data import settings
+url = settings.url
+logs_channel_id = logs.logs_channel_id
+member_logs_channel_id = logs.member_logs_channel_id
 
 class Logs(commands.Cog):
 
@@ -25,7 +21,7 @@ class Logs(commands.Cog):
         # Se não for uma mensagem do canal de logs, do bot ou do sistema (automática do Discord), registrar no logS
         if not message.channel == logs_channel and not message.is_system() and not message.author == self.client.user:
             #msg_date = message.created_at.strftime("às %H:%M:%S em %d/%m/%Y")
-            cor = int(data["settings"][0]["logs"][0]["message_log_colour"])
+            cor = logs.message_log_colour
             url = message.jump_url
             mensagem = message.content
             autor = message.author
@@ -50,7 +46,7 @@ class Logs(commands.Cog):
         url = before.jump_url
         icon = before.author.avatar_url
         footer = before.guild.icon_url
-        cor = int(data["settings"][0]["logs"][0]["message_edited_colour"])
+        cor = logs.message_edited_colour
         embed = discord.Embed(color=cor)
         embed.set_author(name="Mensagem editada", url=url, icon_url=icon)
         embed.add_field(name="Autor da mensagem: " , value=autor.mention , inline=True)
@@ -72,7 +68,7 @@ class Logs(commands.Cog):
         autor = message.author
         icon = message.author.avatar_url
         footer = message.guild.icon_url
-        cor = int(data["settings"][0]["logs"][0]["message_deleted_colour"])
+        cor = logs.message_deleted_colour
         embed = discord.Embed(color=cor)
         embed.set_author(name="Mensagem apagada", url=message.jump_url, icon_url=icon)
         embed.add_field(name="Autor da mensagem:" , value=autor.mention , inline=True)
@@ -86,12 +82,11 @@ class Logs(commands.Cog):
     @commands.Cog.listener()
     async def on_member_join(self, member):
         logs_channel = self.client.get_channel(member_logs_channel_id)
-        user_date = member.joined_at.strftime("%d/%m/%Y")
+        user_date = member.created_at.strftime("%d/%m/%Y")
         now = datetime.now()
         horario = now.strftime("às %H:%M:%S em %d/%m/%Y")
         pfp = member.avatar_url
-        cor = int(data["settings"][0]["logs"][0]["member_join_colour"])
-        url = "https://fenbrasil.net"
+        cor = logs.member_join_colour
         user = member.mention
         embed=discord.Embed(color=cor)
         embed.set_author(name="Novo membro", url=url)
@@ -105,18 +100,18 @@ class Logs(commands.Cog):
     @commands.Cog.listener()
     async def on_member_remove(self, member):
         logs_channel = self.client.get_channel(member_logs_channel_id)
-        user_date = member.joined_at.strftime("às %H:%M:%S em %d/%m/%Y")
+        user_joined = member.joined_at.strftime("às %H:%M:%S em %d/%m/%Y")
+        user_date = member.created_at.strftime("às %H:%M:%S em %d/%m/%Y")
         now = datetime.now()
         horario = now.strftime("às %H:%M:%S em %d/%m/%Y")
         icon = member.avatar_url
         footer = member.guild.icon_url
-        cor = int(data["settings"][0]["logs"][0]["member_leave_colour"])
-        url = "https://fenbrasil.net"
+        cor = logs.member_leave_colour
         user = member.mention
         embed=discord.Embed(color=cor)
         embed.set_author(name="Um membro saiu", url=url)
         embed.set_thumbnail(url=icon)
-        embed.add_field(name='O usuário', value=f" {user} deixou o servidor", inline=True)
+        embed.add_field(name='O usuário', value=f" {user} deixou o servidor.\nEntrou no servidor {user_joined}", inline=True)
         embed.add_field(name="Data de criação da conta: ", value=user_date, inline=False)
         embed.set_footer(text=f"ID: {member.id} | Data: {horario}", icon_url=footer)
         await logs_channel.send(embed=embed)
@@ -131,8 +126,7 @@ class Logs(commands.Cog):
         banned = member.avatar_url
         author = guild.icon_url
         footer = member.guild.icon_url
-        cor = int(data["settings"][0]["logs"][0]["member_ban_colour"])
-        url = "https://fenbrasil.net"
+        cor = logs.member_ban_colour
         user = member.mention
         embed=discord.Embed(color=cor)
         embed.set_author(name="Membro banido", url=url, icon_url=banned)
@@ -151,8 +145,7 @@ class Logs(commands.Cog):
         banned = member.avatar_url
         author = guild.icon_url
         footer = member.guild.icon_url
-        cor = int(data["settings"][0]["logs"][0]["member_unban_colour"])
-        url = "https://fenbrasil.net"
+        cor = logs.member_unban_colour
         user = member.mention
         embed=discord.Embed(color=cor)
         embed.set_author(name="Membro desbanido", url=url, icon_url=banned)
@@ -169,7 +162,7 @@ class Logs(commands.Cog):
         horario = now.strftime("às %H:%M:%S em %d/%m/%Y")
         icon = invite.guild.icon_url
         footer = invite.guild.icon_url
-        cor = int(data["settings"][0]["logs"][0]["invite_created_colour"])
+        cor = logs.invite_created_colour
         url = invite.url
         autor = invite.inviter
         embed=discord.Embed(color=cor)
@@ -209,7 +202,7 @@ class Logs(commands.Cog):
         #created = invite.created_at
         icon = invite.guild.icon_url
         footer = invite.guild.icon_url
-        cor = int(data["settings"][0]["logs"][0]["invite_deleted_colour"])
+        cor = logs.invite_deleted_colour
         url = invite.url
         embed=discord.Embed(color=cor)
         embed.set_author(name="Convite apagado", url=url)

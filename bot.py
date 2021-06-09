@@ -6,9 +6,7 @@ from discord.ext import commands
 # Carregar dados principais do bot
 
 from data import settings
-bot_token = settings.bot_token
-author = settings.author_name
-author_id = settings.author_id
+modules_dir = settings.modules_dir
 
 intents = discord.Intents.default()
 intents.members = True
@@ -16,36 +14,37 @@ intents.bans = True
 intents.invites = True
 
 client = commands.Bot(command_prefix = '?', intents=intents, status=discord.Status.online, activity=discord.Activity(type=discord.ActivityType.watching, name="Fênix Empire Network em www.fenbrasil.net"))
+client.remove_command('help')
 
 # Comandos de carregamento, desativação e recarga dos módulos
 
 @client.command(aliases=['carregar', 'ativar'])
 async def load(ctx, extension):
-    client.load_extension(f'modules.{extension}')
+    client.load_extension(f'{modules_dir}.{extension}')
     await ctx.send('Extensão carregada.')
 
 @client.command(aliases=['descarregar', 'desativar'])
 async def unload(ctx, extension):
-    client.unload_extension(f'modules.{extension}')
+    client.unload_extension(f'{modules_dir}.{extension}')
     await ctx.send('Extensão desativada.')
 
 @client.command(aliases=['recarregar'])
 async def reload(ctx, extension):
-    client.unload_extension(f'modules.{extension}')
-    client.load_extension(f'modules.{extension}')
+    client.unload_extension(f'{modules_dir}.{extension}')
+    client.load_extension(f'{modules_dir}.{extension}')
     await ctx.send('Extensão recarregada.')
 
 # Ao inicializar o bot, carregar todos os módulos presentes no diretório /modules
 
-for filename in os.listdir('./modules'):
-    if filename.endswith('.py'):
-        client.load_extension(f'modules.{filename[:-3]}')
+for filename in os.listdir('./'+modules_dir):
+    if filename.endswith('.py') and filename not in settings.disabled:
+        client.load_extension(f'{modules_dir}.{filename[:-3]}')
 
 # Quando o bot estiver pronto, iniciar o loop de mudança de status: 
 
 @client.event
 async def on_ready():
-    print(f'Bot {client.user} on-line. \nCriado por {author} -> {author_id}')
+    print(f'Bot {client.user} on-line. \nCriado por {settings.author_name} -> {settings.author_id}')
 
 # Logs do terminal do bot:
 
@@ -55,4 +54,4 @@ handler = logging.FileHandler(filename='terminal.log', encoding='utf-8', mode='w
 handler.setFormatter(logging.Formatter('%(asctime)s:%(levelname)s:%(name)s: %(message)s'))
 logger.addHandler(handler)
 
-client.run(bot_token)
+client.run(settings.bot_token)

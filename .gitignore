@@ -1,5 +1,6 @@
 modules/__pycache__/
 data/__pycache__/
+modules/storage/__pycache__/
 terminal.log
 cache.txt
 settings.py
