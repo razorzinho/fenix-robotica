@@ -1,0 +1,23 @@
+# Arquivo base para as configurações hard-coded do bot.
+# Neste arquivo ficarão armazenadas variáveis importantes para o arquivo principal do bot, por ora.
+# Para utilizá-lo, faça uma cópia deste arquivo como settings.py.
+# Este arquivo foi criado com o intuito de fazer o código do bot mais seguro.
+
+
+# Token do BOT, obtido na página: discord.com/developers/applications/id_da_aplicação/bot
+bot_token = ''
+
+# Somente o nome da pasta, que deve estar no mesmo diretório do arquivo bot.py
+modules_dir = '' 
+
+# Nome do autor do BOT
+author_name = ''
+
+# ID do autor do BOT
+author_id = ''
+
+# URL utilizada para referenciar o site da comunidade em embeds ou outros:
+url = ''
+
+# Título utilizado nos Embeds:
+embed_title = ''

@@ -1,6 +1,13 @@
 modules/__pycache__/
 data/__pycache__/
+<<<<<<< HEAD
 storage/__pycache__/
 terminal.log
 cache.txt
 settings.py
+=======
+modules/storage/__pycache__/
+terminal.log
+cache.txt
+settings.py
+>>>>>>> 18138c2ff833f935cdfae193d5f7e62a68022340
