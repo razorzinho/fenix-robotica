@@ -3,30 +3,17 @@ import os
 import logging
 from discord.ext import commands
 
-<<<<<<< HEAD
-file = open("./data/settings.json")
-data = json.loads(file.read())
-token = data["data"][0]["bot_token"]
-autor = data["data"][0]["author_name"]
-id_autor = data["data"][0]["author_id"]
-
-=======
 # Carregar dados principais do bot
 
 from data import settings
 modules_dir = settings.modules_dir
 
->>>>>>> 18138c2ff833f935cdfae193d5f7e62a68022340
 intents = discord.Intents.default()
 intents.members = True
 intents.bans = True
 intents.invites = True
 
-<<<<<<< HEAD
-client = commands.Bot(command_prefix = '?', intents = intents, status=discord.Status.online, activity=discord.Activity(type=discord.ActivityType.watching, name="Fênix Empire Network em www.fenbrasil.net"))
-=======
 client = commands.Bot(command_prefix = '?', intents=intents, status=discord.Status.online, activity=discord.Activity(type=discord.ActivityType.watching, name="Fênix Empire Network em www.fenbrasil.net"))
->>>>>>> 18138c2ff833f935cdfae193d5f7e62a68022340
 client.remove_command('help')
 
 # Comandos de carregamento, desativação e recarga dos módulos
