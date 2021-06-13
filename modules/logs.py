@@ -4,8 +4,6 @@ from datetime import datetime
 from modules.storage import logs
 from data import settings
 url = settings.url
-logs_channel_id = logs.logs_channel_id
-member_logs_channel_id = logs.member_logs_channel_id
 
 class Logs(commands.Cog):
 
@@ -17,7 +15,7 @@ class Logs(commands.Cog):
     async def on_message(self, message):
         now = datetime.now()
         horario = now.strftime("às %H:%M:%S em %d/%m/%Y")
-        logs_channel = self.client.get_channel(logs_channel_id)
+        logs_channel = self.client.get_channel(logs.message_logs_channel_id)
         # Se não for uma mensagem do canal de logs, do bot ou do sistema (automática do Discord), registrar no logS
         if not message.channel == logs_channel and not message.is_system() and not message.author == self.client.user:
             #msg_date = message.created_at.strftime("às %H:%M:%S em %d/%m/%Y")
@@ -41,7 +39,7 @@ class Logs(commands.Cog):
     async def on_message_edit(self, before, after):
         now = datetime.now()
         horario = now.strftime("às %H:%M:%S em %d/%m/%Y")
-        logs_channel = self.client.get_channel(logs_channel_id)
+        logs_channel = self.client.get_channel(logs.message_logs_channel_id)
         autor = before.author
         url = before.jump_url
         icon = before.author.avatar_url
@@ -64,7 +62,7 @@ class Logs(commands.Cog):
     async def on_message_delete(self, message):
         now = datetime.now()
         horario = now.strftime("às %H:%M:%S em %d/%m/%Y")
-        logs_channel = self.client.get_channel(logs_channel_id)
+        logs_channel = self.client.get_channel(logs.message_logs_channel_id)
         autor = message.author
         icon = message.author.avatar_url
         footer = message.guild.icon_url
@@ -81,7 +79,7 @@ class Logs(commands.Cog):
     # Logs de entrada de membros
     @commands.Cog.listener()
     async def on_member_join(self, member):
-        logs_channel = self.client.get_channel(member_logs_channel_id)
+        logs_channel = self.client.get_channel(logs.member_logs_channel_id)
         user_date = member.created_at.strftime("%d/%m/%Y")
         now = datetime.now()
         horario = now.strftime("às %H:%M:%S em %d/%m/%Y")
@@ -99,7 +97,7 @@ class Logs(commands.Cog):
     # Logs de saída de membros
     @commands.Cog.listener()
     async def on_member_remove(self, member):
-        logs_channel = self.client.get_channel(member_logs_channel_id)
+        logs_channel = self.client.get_channel(logs.member_logs_channel_id)
         user_joined = member.joined_at.strftime("às %H:%M:%S em %d/%m/%Y")
         user_date = member.created_at.strftime("às %H:%M:%S em %d/%m/%Y")
         now = datetime.now()
@@ -120,7 +118,7 @@ class Logs(commands.Cog):
     # Logs de banimento
     @commands.Cog.listener()
     async def on_member_ban(self, guild, member):
-        logs_channel = self.client.get_channel(logs_channel_id)
+        logs_channel = self.client.get_channel(logs.moderation_logs_channel_id)
         now = datetime.now()
         horario = now.strftime("às %H:%M:%S em %d/%m/%Y")
         banned = member.avatar_url
@@ -139,7 +137,7 @@ class Logs(commands.Cog):
     # Logs de desbanimento
     @commands.Cog.listener()
     async def on_member_unban(self, guild, member):
-        logs_channel = self.client.get_channel(logs_channel_id)
+        logs_channel = self.client.get_channel(logs.moderation_logs_channel_id)
         now = datetime.now()
         horario = now.strftime("às %H:%M:%S em %d/%m/%Y")
         banned = member.avatar_url
@@ -157,7 +155,7 @@ class Logs(commands.Cog):
     # Logs de criação de convites
     @commands.Cog.listener()
     async def on_invite_create(self, invite):
-        logs_channel = self.client.get_channel(logs_channel_id)
+        logs_channel = self.client.get_channel(logs.invites_logs_channel_id)
         now = datetime.now()
         horario = now.strftime("às %H:%M:%S em %d/%m/%Y")
         icon = invite.guild.icon_url
@@ -196,10 +194,9 @@ class Logs(commands.Cog):
     # Logs de remoção de convites
     @commands.Cog.listener()
     async def on_invite_delete(self, invite):
-        logs_channel = self.client.get_channel(logs_channel_id)
+        logs_channel = self.client.get_channel(logs.invites_logs_channel_id)
         now = datetime.now()
         horario = now.strftime("às %H:%M:%S em %d/%m/%Y")
-        #created = invite.created_at
         icon = invite.guild.icon_url
         footer = invite.guild.icon_url
         cor = logs.invite_deleted_colour
