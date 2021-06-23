@@ -1,10 +1,13 @@
 import discord
+import os
 from discord.ext import commands
 from modules.storage import cargos
+from modules.storage import logs
+from datetime import datetime
 from data import settings
 title = settings.embed_title
 url = settings.url
-admin = cargos.admin_roles_id[0]
+admin = cargos.admin_roles_id
 
 class Mod(commands.Cog):
 
@@ -12,16 +15,42 @@ class Mod(commands.Cog):
         self.client = client
 
     @commands.command()
-    @commands.has_role(admin)
+    @commands.has_any_role(*admin)
     async def clear(self, ctx, amount=0):
+        logs_channel = self.client.get_channel(logs.message_logs_channel_id)
         if amount==0:
-            await ctx.send('**Você deve especificar a quantidade de mensagens a serem apagadas, ' + ctx.author.mention +'.**', delete_after=5.0)
+            await ctx.message.reply(f'**Você deve especificar a quantidade de mensagens a serem apagadas, {ctx.author.name}.**', delete_after=5.0)
+        elif amount < 0:
+            emoji = ':thinking:'
+            await ctx.message.reply(f'**Você não pode apagar um número negativo de mensagens, {ctx.author.name} {emoji}**', delete_after=5.0)
         else:
-            await ctx.channel.purge(limit=amount+1)
-            if amount==1:
-                await ctx.send(f'**Uma mensagem foi apagada.**', delete_after=3)
-            else:
-                await ctx.send(f'**{amount} mensagens foram apagadas.**', delete_after=3) 
+            if amount==1:   
+                await ctx.channel.purge(limit=1) 
+                await ctx.message.reply('Por que você está usando clear para uma única mensagem?', delete_after=5.0)
+            elif amount <= 50 and amount > 0:
+                cor = logs.message_deleted_colour
+                pfp = ctx.author.avatar_url
+                icon = ctx.guild.icon_url
+                now = datetime.now()
+                horario = now.strftime("%H:%M:%S-%d:%m:%Y")
+                autor = ctx.author.name
+                arquivo = f'mensagens_{ctx.channel.name}_{horario}_por_{autor}.log'
+                with open(arquivo, 'w', encoding='utf-8') as log:
+                    #print(f'Arquivo {arquivo} gerado.') // Usado para testes
+                    async for message in ctx.channel.history(limit=amount, oldest_first=False):
+                        data_mensagem = message.created_at
+                        log.writelines(f'[{data_mensagem}] - ({message.author.id}) - {message.author.name}: {message.content} ({message.attachments})\n')
+                await ctx.channel.purge(limit=amount+1)
+                embed = discord.Embed(color=cor)
+                embed.set_author(name='Comando clear utilizado', icon_url=pfp)
+                embed.add_field(name='Utilizado por:', value=ctx.author.mention, inline=False)
+                embed.add_field(name='Quantidade de mensagens apagadas:', value=amount, inline=False)
+                embed.add_field(name='Mensagens apagadas:', value='Log salvo no arquivo enviado abaixo:', inline=False)
+                embed.set_footer(text=settings.embed_title, icon_url=icon)
+                await logs_channel.send(embed=embed)
+                file = discord.File('./'+arquivo)
+                await logs_channel.send(file=file)
+                os.remove('./'+arquivo)
 
     @clear.error 
     async def clear_error(self, ctx, error):
@@ -30,7 +59,7 @@ class Mod(commands.Cog):
             await ctx.send(f'**Você não tem permissão para usar este comando, {ctx.author.mention}.**\nVocê precisa do cargo Admin.', delete_after=4.0)
 
     @commands.command()
-    @commands.has_role(admin)
+    @commands.has_any_role(*admin)
     async def kick(self, ctx, member : discord.Member, *, reason):
         # Mensagem de aviso ao membro que foi punido:
         autor = ctx.message.author
@@ -55,7 +84,7 @@ class Mod(commands.Cog):
             await ctx.send(f'**{ctx.message.author.mention}, você deve especificar quem será expulso e o motivo.**', delete_after=5.0)
 
     @commands.command()
-    @commands.has_role(admin)
+    @commands.has_any_role(*admin)
     async def ban(self, ctx, member:discord.Member, *, reason):
         autor = ctx.message.author
         pfp_autor = autor.avatar_url
@@ -77,7 +106,7 @@ class Mod(commands.Cog):
             await ctx.send('**Você não tem permissão para usar este comando.**', delete_after=5.0)
 
     @commands.command()
-    @commands.has_role(admin)
+    @commands.has_any_role(*admin)
     async def unban(self, ctx, *, member):
         banned_users = await ctx.guild.bans()
         member_name, member_discriminator = member.split('#')

@@ -16,7 +16,7 @@ class Logs(commands.Cog):
         now = datetime.now()
         horario = now.strftime("às %H:%M:%S em %d/%m/%Y")
         logs_channel = self.client.get_channel(logs.message_logs_channel_id)
-        # Se não for uma mensagem do canal de logs, do bot ou do sistema (automática do Discord), registrar no logS
+        # Se não for uma mensagem do canal de logs, do bot ou do sistema (automática do Discord), registrar no log
         if not message.channel == logs_channel and not message.is_system() and not message.author == self.client.user:
             #msg_date = message.created_at.strftime("às %H:%M:%S em %d/%m/%Y")
             cor = logs.message_log_colour
@@ -40,21 +40,22 @@ class Logs(commands.Cog):
         now = datetime.now()
         horario = now.strftime("às %H:%M:%S em %d/%m/%Y")
         logs_channel = self.client.get_channel(logs.message_logs_channel_id)
-        autor = before.author
-        url = before.jump_url
-        icon = before.author.avatar_url
-        footer = before.guild.icon_url
-        cor = logs.message_edited_colour
-        embed = discord.Embed(color=cor)
-        embed.set_author(name="Mensagem editada", url=url, icon_url=icon)
-        embed.add_field(name="Autor da mensagem: " , value=autor.mention , inline=True)
-        embed.add_field(name="Mensagem original: ", value=f"```{before.content}```", inline=False)
-        embed.add_field(name="Arquivos enviados: ", value=before.attachments, inline=False)
-        embed.add_field(name="Mensagem nova: ", value=f"```{after.content}```")
-        embed.add_field(name="Arquivos enviados: ", value=after.attachments, inline=False)
-        embed.add_field(name="Canal da mensagem: ", value=f"<#{before.channel.id}>", inline=True)
-        embed.set_footer(text=f"ID da mensagem: {before.id} | Data: {horario}", icon_url=footer)
-        await logs_channel.send(embed=embed)
+        if not before.channel == logs_channel and not before.is_system() and not before.author == self.client.user:
+            autor = before.author
+            url = before.jump_url
+            icon = before.author.avatar_url
+            footer = before.guild.icon_url
+            cor = logs.message_edited_colour
+            embed = discord.Embed(color=cor)
+            embed.set_author(name="Mensagem editada", url=url, icon_url=icon)
+            embed.add_field(name="Autor da mensagem: " , value=autor.mention , inline=True)
+            embed.add_field(name="Mensagem original: ", value=f"```{before.content}```", inline=False)
+            embed.add_field(name="Arquivos enviados: ", value=before.attachments, inline=False)
+            embed.add_field(name="Mensagem nova: ", value=f"```{after.content}```")
+            embed.add_field(name="Arquivos enviados: ", value=after.attachments, inline=False)
+            embed.add_field(name="Canal da mensagem: ", value=f"<#{before.channel.id}>", inline=True)
+            embed.set_footer(text=f"ID da mensagem: {before.id} | Data: {horario}", icon_url=footer)
+            await logs_channel.send(embed=embed)
 
 
     # Logs de mensagens apagadas
@@ -63,18 +64,19 @@ class Logs(commands.Cog):
         now = datetime.now()
         horario = now.strftime("às %H:%M:%S em %d/%m/%Y")
         logs_channel = self.client.get_channel(logs.message_logs_channel_id)
-        autor = message.author
-        icon = message.author.avatar_url
-        footer = message.guild.icon_url
-        cor = logs.message_deleted_colour
-        embed = discord.Embed(color=cor)
-        embed.set_author(name="Mensagem apagada", url=message.jump_url, icon_url=icon)
-        embed.add_field(name="Autor da mensagem:" , value=autor.mention , inline=True)
-        embed.add_field(name="Conteúdo da mensagem:", value=f"```{message.content}```", inline=False)
-        embed.add_field(name="Arquivos enviados:", value=message.attachments, inline=False)
-        embed.add_field(name="Enviada no canal: ", value=f"<#{message.channel.id}>", inline=True)
-        embed.set_footer(text=f"ID da mensagem: {message.id} | Data: {horario}", icon_url=footer)
-        await logs_channel.send(embed=embed)
+        if not message.channel == logs_channel and not message.is_system() and not message.author == self.client.user:
+            autor = message.author
+            icon = message.author.avatar_url
+            footer = message.guild.icon_url
+            cor = logs.message_deleted_colour
+            embed = discord.Embed(color=cor)
+            embed.set_author(name="Mensagem apagada", url=message.jump_url, icon_url=icon)
+            embed.add_field(name="Autor da mensagem:" , value=autor.mention , inline=True)
+            embed.add_field(name="Conteúdo da mensagem:", value=f"```{message.content}```", inline=False)
+            embed.add_field(name="Arquivos enviados:", value=message.attachments, inline=False)
+            embed.add_field(name="Enviada no canal: ", value=f"<#{message.channel.id}>", inline=True)
+            embed.set_footer(text=f"ID da mensagem: {message.id} | Data: {horario}", icon_url=footer)
+            await logs_channel.send(embed=embed)
 
     # Logs de entrada de membros
     @commands.Cog.listener()

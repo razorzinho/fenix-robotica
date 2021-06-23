@@ -47,21 +47,38 @@ for filename in os.listdir('./'+modules_dir):
     if filename.endswith('.py') and filename not in settings.disabled_modules:
         client.load_extension(f'{modules_dir}.{filename[:-3]}')
 
-# Quando o bot estiver pronto, iniciar o loop de mudança de status: 
+# Quando o bot estiver pronto, enviar mensagem no terminal.
 
 @client.event
 async def on_ready():
     print(f'Bot {client.user} on-line. \nCriado por {settings.author_name} -> {settings.author_id}')
 
 # Cuidar de erros relacionados a comandos
-@client.event
-async def on_command_error(ctx, error):
-    if isinstance(error, commands.MissingRole()):
-        await ctx.message.reply(f"Ops, parece que você não tem o cargo necessário para utilizar este comando, {ctx.message.author.name}.")
-    elif isinstance(error, commands.MissingRequiredArgument()):
-        await ctx.message.reply(f"Ops, parece que você errou o formato deste comando, {ctx.message.author.name}. Utilize o comando ?help comando para saber como se utiliza.")
-    elif isinstance(error, commands.MissingPermissions()):
-        await ctx.message.reply(f"Ops, parece que você não tem a permissão necessária para este comando, {ctx.message.author.name}.")
+#@client.event
+#async def on_command_error(ctx, error):
+    # Todas as funções abaixo estão gerando erro de tipo. 
+#    if isinstance(error, commands.MissingRole(missing_role=None)):
+#        await ctx.message.reply(f"Ops, parece que você não tem o cargo necessário para utilizar este comando, {ctx.message.author.name}.")
+#    elif isinstance(error, commands.MissingAnyRole(missing_roles=None)):
+#        await ctx.message.reply(f"Ops, parece que você não tem o cargo necessário para utilizar este comando, {ctx.message.author.name}.")
+#    elif isinstance(error, commands.MissingRequiredArgument()):
+#        await ctx.message.reply(f"Ops, parece que você errou o formato deste comando, {ctx.message.author.name}. Utilize o comando ?help comando para saber como se utiliza.")
+#    elif isinstance(error, commands.MissingPermissions()):
+#        await ctx.message.reply(f"Ops, parece que você não tem a permissão necessária para este comando, {ctx.message.author.name}.")
+#    elif isinstance(error, commands.MemberNotFound()):
+#        await ctx.message.reply(f"O membro requisitado não foi encontrado. Talvez você tenha errado o formato do comando? \nUse ?help <comando> para ver como utilizá-lo ou garanta que está usando o nome ou mencionando o membro.")
+#    elif isinstance(error, commands.CommandNotFound()):
+#        await ctx.message.reply(f"Parece que o comando que você está tentando utilizar não existe. Use o comando ?help para ver a lista completa de comandos.")
+#    elif isinstance(error, commands.ExtensionAlreadyLoaded()):
+#        await ctx.message.reply(f"A extensão que você tentou carregar já está habilitada.")
+#    elif isinstance(error, commands.ExtensionNotFound()):
+#        await ctx.message.reply(f"Esta extensão não existe.")
+#    elif isinstance(error, commands.ExtensionNotLoaded()):
+#        await ctx.message.reply(f"A extensão que você tentou desabilitar não está habilitada.")
+#    elif isinstance(error, commands.ExtensionFailed()):
+#        await ctx.message.reply(f"A extensão requisitada está gerando um erro:\n```{Exception}```")
+#    return
+
 
 # Logs do terminal do bot:
 
