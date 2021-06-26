@@ -30,3 +30,11 @@ url = ''
 
 # Título utilizado nos Embeds:
 embed_title = ''
+
+# Valor de string para fazer um campo de embed ficar vazio:
+empty_value = '\u200b'
+
+# Módulos desativados (escrever nome do arquivo com extensão: 'status.py', 'database.py')
+disabled_modules = [
+    
+]
