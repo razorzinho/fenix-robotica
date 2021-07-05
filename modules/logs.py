@@ -125,7 +125,7 @@ class Logs(commands.Cog):
         horario = now.strftime("às %H:%M:%S em %d/%m/%Y")
         banned = member.avatar_url
         author = guild.icon_url
-        footer = member.guild.icon_url
+        footer = guild.icon_url
         cor = logs.member_ban_colour
         user = member.mention
         embed=discord.Embed(color=cor)
@@ -144,7 +144,7 @@ class Logs(commands.Cog):
         horario = now.strftime("às %H:%M:%S em %d/%m/%Y")
         banned = member.avatar_url
         author = guild.icon_url
-        footer = member.guild.icon_url
+        footer = guild.icon_url
         cor = logs.member_unban_colour
         user = member.mention
         embed=discord.Embed(color=cor)

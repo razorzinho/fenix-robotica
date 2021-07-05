@@ -31,6 +31,9 @@ url = ''
 # Título utilizado nos Embeds:
 embed_title = ''
 
+# Cor do Embed de ajuda:
+help_embed_colour = 
+
 # Valor de string para fazer um campo de embed ficar vazio:
 empty_value = '\u200b'
 
