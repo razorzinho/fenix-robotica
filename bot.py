@@ -14,11 +14,7 @@ author = settings.author_name
 author_id = settings.author_id
 modules_dir = settings.modules_dir
 
-intents = discord.Intents.default()
-intents.members = True
-intents.bans = True
-intents.invites = True
-intents.reactions = True
+intents = discord.Intents.All()
 
 client = commands.Bot(command_prefix = settings.bot_prefix, intents=intents, status=discord.Status.online, activity=discord.Activity(type=discord.ActivityType.watching, name=settings.activity_name))
 client.remove_command('help')
