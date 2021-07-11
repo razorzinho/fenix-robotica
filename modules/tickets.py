@@ -23,7 +23,7 @@ class Tickets(commands.Cog):
         self.client = client
 
     @commands.command()
-    @commands.has_any_role(*cargos.admin_roles_id)
+    @commands.has_any_role(cargos.admin_roles_id[0])
     async def reports(self, ctx):
         channel_id = tickets.ticket_system_channels[0]
         channel = self.client.get_channel(channel_id)
@@ -31,12 +31,13 @@ class Tickets(commands.Cog):
         footer = settings.embed_title
         url = settings.url
         icon = ctx.guild.icon_url
-        pfp = ctx.author.avatar_url
+        pfp = self.client.user.avatar_url
         embed = discord.Embed(color=cor)
         embed.set_author(name='Sistema de tickets', url=url, icon_url=pfp)
         embed.add_field(name='Denúncia privada', value=f'Reaja abaixo em {activation_emoji} para criar um ticket e fazer uma reclamação/denúncia. Somente usuários <@&{cargos.admin_roles_id[0]}> terão acesso ao canal criado para que você faça sua denúncia.', inline=False)
         embed.add_field(name=warning_title, value=warning_message, inline=False)
         embed.set_footer(text=footer, icon_url=icon)
+        await channel.purge(limit=1)
         message = await channel.send(embed=embed)
         await message.add_reaction(activation_emoji)
 
@@ -44,7 +45,7 @@ class Tickets(commands.Cog):
     async def on_reaction_add(self, reaction, user):
         message = reaction.message
         channel = self.client.get_channel(tickets.ticket_system_channels[0])
-        category = discord.utils.get(self.client.guild.categories, id=tickets.ticket_system_categories[0])
+        #category = discord.utils.get(self.client.user.guild.categories, id=tickets.ticket_system_categories[0])
         category_id = tickets.ticket_system_categories[0]
         now = datetime.now()
         data = now.strftime("%d-%m-%Y")
@@ -60,7 +61,7 @@ class Tickets(commands.Cog):
                 send_messages=True
             )
         }
-        if message.channel == channel and reaction.emoji == activation_emoji:
+        if message.channel == channel and str(reaction.emoji) == activation_emoji:
             print('Reação adicionada.')
             await message.remove_reaction(activation_emoji, user)
             new_channel = await message.guild.create_text_channel(name=f'denúncia_{user.name}_{data}', overwrites=perms, category=category_id, reason=f'Canal de denúncia requisitado por {user.name}')
@@ -73,7 +74,7 @@ class Tickets(commands.Cog):
             await new_channel.send(f'Olá, {user.mention}')
             message = await new_channel.send(embed=embed)
             await message.add_reaction(lock_emoji)
-    #    if message.channel in category.text_channels and reaction.emoji == lock_emoji:
+    #    if message.channel in category.text_channels and str(reaction.emoji) == lock_emoji:
     #        new_perms = {
     #            user:discord.PermissionOverwrite(
     #                read_message_history = False,
