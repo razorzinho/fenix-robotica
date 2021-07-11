@@ -88,6 +88,7 @@ async def on_command_error(ctx, error):
     elif isinstance(error, commands.ExtensionNotLoaded):
         await ctx.reply(f"O módulo que você tentou desabilitar não está habilitado.")
     elif isinstance(error, commands.ExtensionFailed):
+        await ctx.reply("O módulo que você tentou carregar está gerando erros. Vide log.")
         await logs_channel.send(f"{ctx.author.mention} O módulo requisitado está gerando um erro:\n```{Exception}```")
 
 # Logs do terminal do bot:
