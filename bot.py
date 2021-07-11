@@ -1,6 +1,7 @@
 import discord
 import os
 import logging
+from datetime import datetime
 from discord.ext import commands
 from modules.storage import logs
 
@@ -52,22 +53,34 @@ async def reload(ctx, extension):
     client.load_extension(f'{modules_dir}.{extension}')
     await ctx.send(f'Extensão **{str(extension)}** recarregada.')
 
+# Comando de desativar o bot de forma segura; NÃO FECHAR O TERMINAL, SOMENTE DESLIGÁ-LO POR ESTE COMANDO.
+
+@client.command()
+@commands.has_role(cargos.admin_roles_id[0])
+async def kill(ctx, *, reason):
+    cor = logs.bot_logout_colour
+    logs_channel = client.get_channel(logs.bot_logs_channel_id)
+    now = datetime.now()
+    horario = now.strftime("às %H:%M:%S em %d/%m/%Y")
+    embed = discord.Embed(colour=cor)
+    embed.set_author(name=client.user.name, url='https://fenbrasil.net/panel/discord', icon_url=client.user.avatar_url)
+    embed.add_field(name='Desativação do BOT', value=f'BOT desligado por {ctx.author.mention}\n**Motivo:** {reason}', inline=False)
+    embed.set_footer(text=f'{horario}', icon_url=client.user.avatar_url)
+    logs_channel.send(embed=embed)
+    await logs_channel.send(embed=embed)
+    await ctx.send('Desligando...')
+    await client.close()
+
 # Ao inicializar o bot, carregar todos os módulos presentes no diretório /modules, exceto os marcados como desabilitados
 
 for filename in os.listdir('./'+modules_dir):
     if filename.endswith('.py') and filename not in settings.disabled_modules:
         client.load_extension(f'{modules_dir}.{filename[:-3]}')
 
-# Quando o bot estiver pronto, enviar mensagem no terminal.
-
-@client.event
-async def on_ready():
-    print(f'Bot {client.user} on-line. \nCriado por {settings.author_name} -> {settings.author_id}')
-
 # Cuidar de erros relacionados a comandos
 @client.event
 async def on_command_error(ctx, error):
-    logs_channel = client.get_channel(logs.moderation_logs_channel_id)
+    logs_channel = client.get_channel(logs.bot_logs_channel_id)
     error = error.original
     if isinstance(error, commands.MissingRole):
         await ctx.reply(f"Ops, parece que você não tem o cargo necessário para utilizar este comando, {ctx.author.name}.")
@@ -88,8 +101,8 @@ async def on_command_error(ctx, error):
     elif isinstance(error, commands.ExtensionNotLoaded):
         await ctx.reply(f"O módulo que você tentou desabilitar não está habilitado.")
     elif isinstance(error, commands.ExtensionFailed):
-        await ctx.reply("O módulo que você tentou carregar está gerando erros. Vide log.")
-        await logs_channel.send(f"{ctx.author.mention} O módulo requisitado está gerando um erro:\n```{Exception}```")
+        await ctx.reply(f"O módulo **{ctx.message.content[-4:]}** está gerando erros e não pôde ser habilitado. Vide logs. Marquei você no canal.")
+        await logs_channel.send(f"{ctx.author.mention} O módulo **{ctx.message.content[-4:]}** está gerando um erro:\n```{error}```")
 
 # Logs do terminal do bot:
 

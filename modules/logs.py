@@ -10,6 +10,28 @@ class Logs(commands.Cog):
     def __init__(self, client):
         self.client = client   
 
+    # Logs do bot
+    @commands.Cog.listener()
+    async def on_ready(self):
+        for guild in self.client.guilds:
+            guild = guild
+        print(f'Bot {self.client.user} on-line. \nCriado por {settings.author_name} -> {settings.author_id}')
+        logs_channel = self.client.get_channel(logs.bot_logs_channel_id)
+        cor = logs.bot_online_colour
+        now = datetime.now()
+        horario = now.strftime("às %H:%M:%S em %d/%m/%Y")
+        embed = discord.Embed(colour=cor)
+        embed.set_author(name=self.client.user.name, url='https://fenbrasil.net/panel/discord', icon_url=self.client.user.avatar_url)
+        embed.add_field(name='Data de criação: ', value=f'{guild.created_at.__format__("às %H:%M:%S em %d/%m/%Y")}', inline=False)
+        embed.add_field(name='Quantidade atual de membros: ', value=f'{guild.member_count}', inline=False)
+        embed.add_field(name='Dono do servidor: ', value=f'{guild.owner}', inline=False)
+        embed.add_field(name='Região do servidor: ', value=f'{guild.region}', inline=False)
+        embed.add_field(name='Outras informações do servidor: ', value=f'```{guild.features}```', inline=False)
+        embed.set_image(url=guild.banner_url)
+        embed.set_thumbnail(url=guild.icon_url)
+        embed.set_footer(text=f'Ativado no servidor {guild.name}, ID: ({guild.id}) | {horario}', icon_url=self.client.user.avatar_url)
+        await logs_channel.send(embed=embed)
+
     # Logs de mensagens
     @commands.Cog.listener()
     async def on_message(self, message):
@@ -18,7 +40,8 @@ class Logs(commands.Cog):
         logs_channel = self.client.get_channel(logs.message_logs_channel_id)
         # Se não for uma mensagem do canal de logs, do bot ou do sistema (automática do Discord), registrar no log
         if not message.channel == logs_channel and not message.is_system() and not message.author == self.client.user:
-            #msg_date = message.created_at.strftime("às %H:%M:%S em %d/%m/%Y")
+            msg_date = message.created_at
+            date_formatted = msg_date.strftime("às %H:%M:%S em %d/%m/%Y")
             cor = logs.message_log_colour
             url = message.jump_url
             mensagem = message.content
@@ -82,7 +105,7 @@ class Logs(commands.Cog):
     @commands.Cog.listener()
     async def on_member_join(self, member):
         logs_channel = self.client.get_channel(logs.member_logs_channel_id)
-        user_date = member.created_at.strftime("%d/%m/%Y")
+        user_date = member.created_at.__format__("%d/%m/%Y")
         now = datetime.now()
         horario = now.strftime("às %H:%M:%S em %d/%m/%Y")
         pfp = member.avatar_url
