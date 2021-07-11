@@ -1,6 +1,9 @@
 # Este arquivo armazena as configurações para o módulo de logs.
 # Preencha os valores das variáveis de acordo com seus tipos
 
+# ID do canal de texto que receberá os logs do bot:
+bot_logs_channel_id = 863849717480947712
+
 # ID do canal de texto que receberá os logs de mensagens:
 message_logs_channel_id = 853508660915470336
 
@@ -12,6 +15,12 @@ moderation_logs_channel_id = 853503602474483753
 
 # ID do canal de texto que receberá os logs de 
 invites_logs_channel_id = 853504069687705600
+
+# Valor decimal (da cor em hexadecimal) da cor da mensagem de ativação do bot
+bot_online_colour = 16776960
+
+# Valor decimal (da cor em hexadecimal) da cor da mensagem de desativação do bot
+bot_logout_colour = 16711680
 
 # Valor decimal (da cor em hexadecimal) da cor da mensagem que registra mensagens enviadas
 message_log_colour = 16776960 #ffff00
