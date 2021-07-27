@@ -14,7 +14,7 @@ author = settings.author_name
 author_id = settings.author_id
 modules_dir = settings.modules_dir
 
-intents = discord.Intents.All()
+intents = discord.Intents.all()
 
 client = commands.Bot(command_prefix = settings.bot_prefix, intents=intents, status=discord.Status.online, activity=discord.Activity(type=discord.ActivityType.watching, name=settings.activity_name))
 client.remove_command('help')
@@ -53,7 +53,7 @@ async def reload(ctx, extension):
 
 @client.command()
 @commands.has_role(cargos.admin_roles_id[0])
-async def kill(ctx, *, reason):
+async def kill(ctx, *, reason='Sem motivo.'):
     cor = logs.bot_logout_colour
     logs_channel = client.get_channel(logs.bot_logs_channel_id)
     now = datetime.now()
