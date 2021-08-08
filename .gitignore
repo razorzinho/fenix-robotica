@@ -1,6 +1,5 @@
-modules/__pycache__/
-data/__pycache__/
-modules/storage/__pycache__/
+__pycache__/
+*/__pycache__
 terminal.log
 cache.txt
-data/*.py
+data/*.y
