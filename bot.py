@@ -3,11 +3,12 @@ import os
 import logging
 from datetime import datetime
 from discord.ext import commands
+from discord_buttons_plugin import *
 from modules.storage import logs
+from modules.storage import cargos
 
 # Carregar dados principais do bot
 
-from modules.storage import cargos
 from data import settings
 bot_token = settings.bot_token
 author = settings.author_name
@@ -18,6 +19,7 @@ intents = discord.Intents.all()
 
 client = commands.Bot(command_prefix = settings.bot_prefix, intents=intents, status=discord.Status.online, activity=discord.Activity(type=discord.ActivityType.watching, name=settings.activity_name))
 client.remove_command('help')
+buttons = ButtonsClient(client)
 
 # Comandos de carregamento, desativação e recarga dos módulos
 
@@ -61,7 +63,7 @@ async def kill(ctx, *, reason='Sem motivo.'):
     embed = discord.Embed(colour=cor)
     embed.set_author(name=client.user.name, url='https://fenbrasil.net/panel/discord', icon_url=client.user.avatar_url)
     embed.add_field(name='Desativação do BOT', value=f'BOT desligado por {ctx.author.mention}\n**Motivo:** {reason}', inline=False)
-    embed.set_footer(text=f'{horario}', icon_url=client.user.avatar_url)
+    embed.set_footer(text=f'{horario}', icon_url=client.user.avatar)
     logs_channel.send(embed=embed)
     await logs_channel.send(embed=embed)
     await ctx.send('Desligando...')
