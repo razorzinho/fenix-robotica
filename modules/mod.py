@@ -5,6 +5,7 @@ from modules.storage import cargos
 from modules.storage import logs
 from datetime import datetime
 from data import settings
+prefix = settings.bot_prefix
 title = settings.embed_title
 url = settings.url
 admin = cargos.admin_roles_id
@@ -14,7 +15,7 @@ class Mod(commands.Cog):
     def __init__(self, client):
         self.client = client
 
-    @commands.command()
+    @commands.command(help=f'\"{prefix}clear *quantidade*\" Apaga a quantidade dada de mensagens no canal em que foi utilizado. Somente membros Staff podem usá-lo.')
     @commands.has_any_role(*admin)
     async def clear(self, ctx, amount=0):
         logs_channel = self.client.get_channel(logs.message_logs_channel_id)
@@ -44,20 +45,13 @@ class Mod(commands.Cog):
             embed.set_author(name='Comando clear utilizado', icon_url=pfp)
             embed.add_field(name='Utilizado por:', value=ctx.author.mention, inline=False)
             embed.add_field(name='Quantidade de mensagens apagadas:', value=amount, inline=False)
-            embed.add_field(name='Mensagens apagadas:', value='Log salvo no arquivo enviado abaixo:', inline=False)
+            embed.add_field(name='Mensagens apagadas:', value='Log salvo no arquivo abaixo:', inline=False)
             embed.set_footer(text=settings.embed_title, icon_url=icon)
-            await logs_channel.send(embed=embed)
             file = discord.File('./'+arquivo)
-            await logs_channel.send(file=file)
+            await logs_channel.send(embed=embed, file=file)
             os.remove('./'+arquivo)
 
-    @clear.error 
-    async def clear_error(self, ctx, error):
-        if isinstance(error, commands.MissingRole):
-            await ctx.channel.purge(limit=1)
-            await ctx.send(f'**Você não tem permissão para usar este comando, {ctx.author.mention}.**\nVocê precisa do cargo Admin.', delete_after=4.0)
-
-    @commands.command()
+    @commands.command(help=f'\"{prefix}kick *@membro* **motivo**\" Expulsa o membro mencionado pelo motivo especificado. Somente Administradores podem utilizá-lo.')
     @commands.has_any_role(*admin)
     async def kick(self, ctx, member : discord.Member, *, reason):
         # Mensagem de aviso ao membro que foi punido:
@@ -74,15 +68,7 @@ class Mod(commands.Cog):
         await member.kick(reason=reason)
         await ctx.send(f'O usuário {member.mention} foi expulso do servidor.')
 
-    @kick.error
-    async def kick_error(self, ctx, error):
-        if isinstance(error, commands.MissingRole):
-            await ctx.channel.purge(limit=1)
-            await ctx.send(f'**Você não tem permissão para usar este comando, {ctx.author.mention}.**', delete_after=4.0)
-        elif isinstance(error, commands.MissingRequiredArgument()):
-            await ctx.send(f'**{ctx.message.author.mention}, você deve especificar quem será expulso e o motivo.**', delete_after=5.0)
-
-    @commands.command()
+    @commands.command(help=f'''\"{prefix}ban *@membro* **motivo**\" Bane o membro mencionado pelo motivo especificado. Somente Administradores podem utilizá-lo.''')
     @commands.has_any_role(*admin)
     async def ban(self, ctx, member:discord.Member, *, reason):
         autor = ctx.message.author
@@ -98,13 +84,7 @@ class Mod(commands.Cog):
         await member.ban(reason=reason)
         await ctx.send(f'O usuário {member.mention} foi banido do servidor.')
     
-    @ban.error
-    async def ban_error(self, ctx, error):
-        if isinstance(error, commands.MissingRole):
-            await ctx.channel.purge(limit=1)
-            await ctx.send('**Você não tem permissão para usar este comando.**', delete_after=5.0)
-
-    @commands.command()
+    @commands.command(help=f'\"{prefix}unban *ID/Nome#tag*\" Desbane o usuário portador do *ID/nome#tag* especificado. Somente Administradores podem utilizá-lo.')
     @commands.has_any_role(*admin)
     async def unban(self, ctx, *, member):
         banned_users = await ctx.guild.bans()
@@ -116,14 +96,6 @@ class Mod(commands.Cog):
             await ctx.guild.unban(user)
             await ctx.send(f'O usuário {user.mention} foi desbanido do servidor.')
             return
-
-    @unban.error
-    async def unban_error(self, ctx, error):
-        if isinstance(error, commands.MissingRole):
-            await ctx.channel.purge(limit=1)
-            await ctx.send(f'**Você não tem permissão para usar este comando, {ctx.author.mention}.**', delete_after=5.0)
-        elif  isinstance(error, commands.MissingRequiredArgument()):
-            await ctx.send(f'**{ctx.message.author.mention}, você deve especificar o nome do usuário que será desbanido.**', delete_after=5.0)
 
 def setup(client):
     client.add_cog(Mod(client))

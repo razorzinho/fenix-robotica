@@ -10,9 +10,6 @@ from discord.ext import commands
 #feedback_channel_id = tickets.ticket_system_channels[3]
 #bans_channel_id = tickets.ticket_system_channels[4]
 #staff_channel_id = tickets.ticket_system_channels[5]
-
-warning_title = 'Note que:'
-warning_message = f'abrir tickets repetidamente sem necessidade poderá levar a punição no servidor do Discord. Nossos membros da equipe sempre levarão a sério qualquer ticket aqui criado, então, pedimos que faça o mesmo e não disperdice nosso tempo com brincadeiras.\nUm <@&{cargos.admin_roles_id[0]}> poderá fechar ou reabrir um ticket criado de acordo com a necessidade para com cada caso.'
 activation_emoji = '⚠️'
 lock_emoji = '🔒'
 unlock_emoji = '🔓'
@@ -21,25 +18,6 @@ class Tickets(commands.Cog):
 
     def __init__(self, client):
         self.client = client
-
-    @commands.command()
-    @commands.has_any_role(cargos.admin_roles_id[0])
-    async def reports(self, ctx):
-        channel_id = tickets.ticket_system_channels[0]
-        channel = self.client.get_channel(channel_id)
-        cor = tickets.report_ticket_colour
-        footer = settings.embed_title
-        url = settings.url
-        icon = ctx.guild.icon_url
-        pfp = self.client.user.avatar_url
-        embed = discord.Embed(color=cor)
-        embed.set_author(name='Sistema de tickets', url=url, icon_url=pfp)
-        embed.add_field(name='Denúncia privada', value=f'Reaja abaixo em {activation_emoji} para criar um ticket e fazer uma reclamação/denúncia. Somente usuários <@&{cargos.admin_roles_id[0]}> terão acesso ao canal criado para que você faça sua denúncia.', inline=False)
-        embed.add_field(name=warning_title, value=warning_message, inline=False)
-        embed.set_footer(text=footer, icon_url=icon)
-        await channel.purge(limit=1)
-        message = await channel.send(embed=embed)
-        await message.add_reaction(activation_emoji)
 
     @commands.Cog.listener()
     async def on_reaction_add(self, reaction, user):
