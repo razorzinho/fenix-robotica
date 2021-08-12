@@ -104,7 +104,7 @@ class Logs(commands.Cog):
             embed.set_footer(text=f"ID da mensagem: {message.id} | Data: {horario}", icon_url=footer)
             await logs_channel.send(embed=embed)
 
-    # Logs de entrada de membros
+    # Logs de entrada de membros + aviso ao novo membro para ler às regras do servidor
     @commands.Cog.listener()
     async def on_member_join(self, member):
         logs_channel = self.client.get_channel(logs.member_logs_channel_id)
