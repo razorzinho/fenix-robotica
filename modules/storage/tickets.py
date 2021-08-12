@@ -2,6 +2,9 @@
 # Preencha este arquivo sem apagar os comentários, pois eles indicam,
 # corretamente, qual valor deve ser atribuído a cada espaço de variável
 
+# ID do canal de regras do servidor, que será marcado para que os usuários leiam ao entrar.
+rules_channel_id = 777439182154760202
+
 # Cor do embed do canal de denúncias:
 report_ticket_colour = 16711680 #ff0000
 
@@ -19,6 +22,11 @@ bans_ticket_colour = 16711680 #ff0000
 
 # Cor do emebed do canal de inscrição:
 staff_ticket_colour = 16776960 #ffff00
+
+# Modalidade de tickets: 
+# ('threads' usa threads privadas que serão subordinadas aos canais de ticket)
+# ('channels' usa canais privados que serão subordinados a categorias criadas para cada tipo de ticket)
+tickets_mode = 'threads'
 
 # IDs dos canais de ticket:
 ticket_system_channels = [

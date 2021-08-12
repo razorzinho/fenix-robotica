@@ -9,6 +9,9 @@ bot_token = ''
 # Prefixo para os comandos do BOT:
 bot_prefix = ''
 
+# Nome do bot:
+bot_name = ''
+
 # Somente o nome da pasta, que deve estar no mesmo diretório do arquivo bot.py
 modules_dir = ''
 
