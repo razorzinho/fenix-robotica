@@ -1,7 +1,8 @@
 import discord
+from discord import role
 from discord.ext import commands
 from datetime import datetime
-from modules.storage import logs
+from modules.storage import logs, cargos
 from data import settings
 url = settings.url
 
@@ -15,17 +16,26 @@ class Logs(commands.Cog):
     async def on_ready(self):
         for guild in self.client.guilds:
             guild = guild
+            admins_ids = []
+            for member in guild.members:
+                if role in member.roles:
+                    if role.id == cargos.admin_roles_id[1]:
+                        admins_ids.member = member.id
         print(f'{self.client.user} on-line. \nCriado por {settings.author_name} -> {settings.author_id}')
         logs_channel = self.client.get_channel(logs.bot_logs_channel_id)
         cor = logs.bot_online_colour
         now = datetime.now()
         horario = now.strftime("às %H:%M:%S em %d/%m/%Y")
         embed = discord.Embed(colour=cor)
-        embed.set_author(name=self.client.user.name, url='https://fenbrasil.net/panel/discord', icon_url=self.client.user.avatar.url)
+        embed.set_author(name=self.client.user.name, url=settings.url_panel, icon_url=self.client.user.avatar.url)
         embed.add_field(name='Prefixo utilizado: ', value=f'[{settings.bot_prefix}]')
         embed.add_field(name='Data de criação: ', value=f'{guild.created_at.__format__("às %H:%M:%S em %d/%m/%Y")}', inline=False)
         embed.add_field(name='Quantidade atual de membros: ', value=f'{guild.member_count}', inline=False)
         embed.add_field(name='Dono do servidor: ', value=f'{guild.owner}', inline=False)
+        embed.add_field(name='Administradores:', value=settings.empty_value, inline=False)
+        for member in admins_ids:
+            await guild.get_member(member)
+            embed.add_field(name=settings.empty_value, value=member.name, inline=False)
         embed.add_field(name='Região do servidor: ', value=f'{guild.region}', inline=False)
         embed.add_field(name='Outras informações do servidor: ', value=f'```{guild.features}```', inline=False)
         print(guild.banner)
@@ -42,9 +52,9 @@ class Logs(commands.Cog):
         horario = now.strftime("às %H:%M:%S em %d/%m/%Y")
         logs_channel = self.client.get_channel(logs.message_logs_channel_id)
         # Se não for uma mensagem do canal de logs, do bot ou do sistema (automática do Discord), registrar no log
-        if not message.channel == logs_channel and not message.is_system() and not message.author == self.client.user:
-            msg_date = message.created_at
-            date_formatted = msg_date.strftime("às %H:%M:%S em %d/%m/%Y")
+        if not message.channel.id not in logs.unlogged_channels_id and not message.is_system() and not message.author == self.client.user:
+            #msg_date = message.created_at
+            #date_formatted = msg_date.strftime("às %H:%M:%S em %d/%m/%Y")
             cor = logs.message_log_colour
             url = message.jump_url
             mensagem = message.content
