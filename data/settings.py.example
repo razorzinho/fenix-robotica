@@ -14,8 +14,20 @@ bot_prefix = '?'
 # Nome do bot:
 bot_name = ''
 
+# Nome do arquivo principal do bot
+main_file = ''
+
 # Somente o nome da pasta, que deve estar no mesmo diretório do arquivo bot.py
 modules_dir = 'modules'
+
+# Módulos desativados (escrever nome do arquivo com extensão: status.py)
+disabled_modules = [
+    '',
+    ''
+]
+
+# Nome do arquivo principal do bot
+main_file = ''
 
 # Tipo de atividade do BOT (streaming[twitch.tv/], watching, listening, playing):
 activity_type = ''
@@ -86,12 +98,3 @@ help_embed_colour = 16711680
 
 # Valor de string para fazer um campo de embed ficar vazio:
 empty_value = '\u200b'
-
-# Módulos desativados (escrever nome do arquivo com extensão: status.py)
-disabled_modules = [
-    '',
-    ''
-]
-
-# Nome do arquivo principal do bot
-main_file = ''
