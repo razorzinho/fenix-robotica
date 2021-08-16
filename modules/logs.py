@@ -9,7 +9,7 @@ url = settings.url
 class Logs(commands.Cog):
 
     def __init__(self, client):
-        self.client = client   
+        self.client = client  
 
     # Logs do bot
     @commands.Cog.listener()
@@ -18,9 +18,9 @@ class Logs(commands.Cog):
             guild = guild
             admins_ids = []
             for member in guild.members:
-                if role in member.roles:
-                    if role.id == cargos.admin_roles_id[1]:
-                        admins_ids.member = member.id
+                for role in member.roles:
+                    if role.id in cargos.admin_roles_id:
+                        admins_ids.append(member.id)
         print(f'{self.client.user} on-line. \nCriado por {settings.author_name} -> {settings.author_id}')
         logs_channel = self.client.get_channel(logs.bot_logs_channel_id)
         cor = logs.bot_online_colour
@@ -32,13 +32,14 @@ class Logs(commands.Cog):
         embed.add_field(name='Data de criação: ', value=f'{guild.created_at.__format__("às %H:%M:%S em %d/%m/%Y")}', inline=False)
         embed.add_field(name='Quantidade atual de membros: ', value=f'{guild.member_count}', inline=False)
         embed.add_field(name='Dono do servidor: ', value=f'{guild.owner}', inline=False)
-        embed.add_field(name='Administradores:', value=settings.empty_value, inline=False)
-        for member in admins_ids:
-            await guild.get_member(member)
-            embed.add_field(name=settings.empty_value, value=member.name, inline=False)
+        admins = []
+        for member_id in admins_ids:
+            member = guild.get_member(member_id)
+            admins.append(member)
+        embed.add_field(name='Administradores:', value='\n'.join(map(str,admins)), inline=False)
         embed.add_field(name='Região do servidor: ', value=f'{guild.region}', inline=False)
         embed.add_field(name='Outras informações do servidor: ', value=f'```{guild.features}```', inline=False)
-        print(guild.banner)
+        #print(guild.banner)
         if guild.banner is not None:
             embed.set_image(url=guild.banner)
         embed.set_thumbnail(url=guild.icon.url)
