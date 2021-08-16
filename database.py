@@ -1,5 +1,3 @@
-import discord
-from discord.ext import commands
 import pymongo
 from data import settings
 from modules.storage import *
