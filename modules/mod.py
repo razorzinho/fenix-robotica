@@ -10,27 +10,44 @@ title = settings.embed_title
 url = settings.url
 admin = cargos.admin_roles_id
 
-class Mod(commands.Cog):
+class Mod(commands.Cog, name='Moderação', description='''Comandos especiais de uso administrativo. Servem com intuito de moderar e organizar o servidor, bem como punir membros. Somente acessíveis por Administradores+'''):
 
     def __init__(self, client):
         self.client = client
 
-    @commands.command(help=f'\"{prefix}clear *quantidade*\" Apaga a quantidade dada de mensagens no canal em que foi utilizado. Somente membros Staff podem usá-lo.')
+    # Apagar mensagens enviadas em canais restritos por usuários que não sejam bots ou não venham de webhooks:
+    @commands.Cog.listener()
+    async def on_message(self, message):
+        if not message.author.bot and message.channel.id in logs.not_messegeable and message.webhook_id is None:
+            logs_channel = self.client.get_channel(logs.moderation_logs_channel_id)
+            embed = discord.Embed(colour=logs.message_deleted_colour)
+            embed.set_author(name=self.client.user.name, icon_url=self.client.user.avatar.url)
+            embed.add_field(name='Mensagem enviada em canal restrito', value='Já foi removida, informações abaixo:', inline=False)
+            embed.add_field(name='Autor da mensagem:', value=message.author.mention, inline=False)
+            embed.add_field(name='Conteúdo da mensagem:', value=f'```{message.content}```', inline=False)
+            embed.add_field(name='Anexos da mensagem:', value=message.attachments, inline=False)
+            embed.add_field(name='Canal da mensagem:', value=message.channel.mention, inline=False)
+            embed.set_footer(text=f'{message.guild.name} | {message.created_at}', icon_url=message.guild.icon.url)
+            await logs_channel.send(embed=embed)
+            await message.delete()
+
+    # Comando de limpeza; apaga a quantidade especificada de mensagens. Só pode ser usado com mais de uma mensagem.
+    @commands.command(help='''Apaga a quantidade dada de mensagens no canal em que foi utilizado. Somente membros Staff podem usá-lo.''', usage=f'{prefix}clear *quantidade*')
     @commands.has_any_role(*admin)
     async def clear(self, ctx, amount=0):
         logs_channel = self.client.get_channel(logs.message_logs_channel_id)
         if amount==0:
-            await ctx.message.reply(f'**Você deve especificar a quantidade de mensagens a serem apagadas, {ctx.author.name}.**', delete_after=5.0)
+            await ctx.reply(f'**Você deve especificar a quantidade de mensagens a serem apagadas, {ctx.author.name}.**', delete_after=5.0)
         elif amount < 0:
             emoji = ':thinking:'
-            await ctx.message.reply(f'**Você não pode apagar um número negativo de mensagens, {ctx.author.name} {emoji}**', delete_after=5.0)
+            await ctx.reply(f'**Você não pode apagar um número negativo de mensagens, {ctx.author.name} {emoji}**', delete_after=5.0)
         if amount==1:   
                 await ctx.channel.purge(limit=1) 
-                await ctx.message.reply('Por que você está usando clear para uma única mensagem?', delete_after=5.0)
+                await ctx.reply('Por que você está usando clear para uma única mensagem?', delete_after=5.0)
         else:
             cor = logs.message_deleted_colour
-            pfp = ctx.author.avatar_url
-            icon = ctx.guild.icon_url
+            pfp = ctx.author.avatar.url
+            icon = ctx.guild.icon.url
             now = datetime.now()
             horario = now.strftime("%H:%M:%S-%d:%m:%Y")
             autor = ctx.author.name
@@ -51,13 +68,13 @@ class Mod(commands.Cog):
             await logs_channel.send(embed=embed, file=file)
             os.remove('./'+arquivo)
 
-    @commands.command(help=f'\"{prefix}kick *@membro* **motivo**\" Expulsa o membro mencionado pelo motivo especificado. Somente Administradores podem utilizá-lo.')
+    @commands.command(help='''Expulsa o membro mencionado pelo motivo especificado. Somente Administradores podem utilizá-lo.''', usage=f'{prefix}kick *@membro* **motivo**')
     @commands.has_any_role(*admin)
     async def kick(self, ctx, member : discord.Member, *, reason):
         # Mensagem de aviso ao membro que foi punido:
         autor = ctx.message.author
-        autor_pfp = autor.avatar_url
-        footer = ctx.guild.icon_url
+        autor_pfp = autor.avatar.url
+        footer = ctx.guild.icon.url
         cor = 0xff0000
         embed=discord.Embed(color=cor)
         embed.set_author(name=title, url=url, icon_url=autor_pfp)
@@ -68,12 +85,12 @@ class Mod(commands.Cog):
         await member.kick(reason=reason)
         await ctx.send(f'O usuário {member.mention} foi expulso do servidor.')
 
-    @commands.command(help=f'''\"{prefix}ban *@membro* **motivo**\" Bane o membro mencionado pelo motivo especificado. Somente Administradores podem utilizá-lo.''')
+    @commands.command(help='''Bane o membro mencionado pelo motivo especificado. Somente Administradores podem utilizá-lo.''', usage=f'{prefix}ban *@membro* **motivo**')
     @commands.has_any_role(*admin)
     async def ban(self, ctx, member:discord.Member, *, reason):
         autor = ctx.message.author
-        pfp_autor = autor.avatar_url
-        footer = ctx.guild.icon_url
+        pfp_autor = autor.avatar.url
+        footer = ctx.guild.icon.url
         cor = 0xff0000
         embed=discord.Embed(color=cor)
         embed.set_author(name=title, icon_url=pfp_autor)
@@ -84,7 +101,7 @@ class Mod(commands.Cog):
         await member.ban(reason=reason)
         await ctx.send(f'O usuário {member.mention} foi banido do servidor.')
     
-    @commands.command(help=f'\"{prefix}unban *ID/Nome#tag*\" Desbane o usuário portador do *ID/nome#tag* especificado. Somente Administradores podem utilizá-lo.')
+    @commands.command(help='''Desbane o usuário portador do *ID/nome#tag* especificado. Somente Administradores podem utilizá-lo.''', usage=f'{prefix}unban *ID/Nome#tag*')
     @commands.has_any_role(*admin)
     async def unban(self, ctx, *, member):
         banned_users = await ctx.guild.bans()
