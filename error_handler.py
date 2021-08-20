@@ -28,3 +28,4 @@ def setup(client):
         elif isinstance(error.original, commands.ExtensionFailed):
             await ctx.reply(f"O módulo **{ctx.message.content[-4:]}** está gerando erros e não pôde ser habilitado. Vide logs. Marquei você no canal.")
             await logs_channel.send(f"{ctx.author.mention} O módulo **{ctx.message.content[-4:]}** está gerando um erro:\n```{error}```")
+        raise error
