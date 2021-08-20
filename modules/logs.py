@@ -53,9 +53,7 @@ class Logs(commands.Cog):
         horario = now.strftime("às %H:%M:%S em %d/%m/%Y")
         logs_channel = self.client.get_channel(logs.message_logs_channel_id)
         # Se não for uma mensagem do canal de logs, do bot ou do sistema (automática do Discord), registrar no log
-        if not message.channel.id not in logs.unlogged_channels_id and not message.is_system() and not message.author == self.client.user:
-            #msg_date = message.created_at
-            #date_formatted = msg_date.strftime("às %H:%M:%S em %d/%m/%Y")
+        if message.channel.id not in logs.unlogged_channels_id and message.channel.id not in logs.not_messegeable and not message.is_system() and not message.author == self.client.user and not message.author.bot:
             cor = logs.message_log_colour
             url = message.jump_url
             mensagem = message.content
@@ -119,6 +117,7 @@ class Logs(commands.Cog):
     @commands.Cog.listener()
     async def on_member_join(self, member):
         logs_channel = self.client.get_channel(logs.member_logs_channel_id)
+        members_channel = self.client.get_channel(logs.public_member_channel_id)
         user_date = member.created_at.__format__("%d/%m/%Y")
         now = datetime.now()
         horario = now.strftime("às %H:%M:%S em %d/%m/%Y")
@@ -130,19 +129,20 @@ class Logs(commands.Cog):
         embed.set_thumbnail(url=pfp)
         embed.add_field(name='O usuário', value=f" {user} entrou no servidor", inline=True)
         embed.add_field(name="Data de criação da conta: ", value=user_date, inline=False)
-        embed.set_footer(text=f"ID: {member.id} | Data: {horario}")
+        embed.set_footer(text=f"ID: {member.id} | Data: {horario}", icon_url=member.guild.icon.url)
         await logs_channel.send(embed=embed)
+        await members_channel.send(embed=embed)
 
     # Logs de saída de membros
     @commands.Cog.listener()
     async def on_member_remove(self, member):
         logs_channel = self.client.get_channel(logs.member_logs_channel_id)
-        user_joined = member.joined_at.strftime("às %H:%M:%S em %d/%m/%Y")
-        user_date = member.created_at.strftime("às %H:%M:%S em %d/%m/%Y")
+        members_channel = self.client.get_channel(logs.public_member_channel_id)
+        user_joined = member.joined_at.__format__("às %H:%M:%S em %d/%m/%Y")
+        user_date = member.created_at.__format__("às %H:%M:%S em %d/%m/%Y")
         now = datetime.now()
         horario = now.strftime("às %H:%M:%S em %d/%m/%Y")
         icon = member.avatar.url
-        footer = member.guild.icon.url
         cor = logs.member_leave_colour
         user = member.mention
         embed=discord.Embed(color=cor)
@@ -150,8 +150,9 @@ class Logs(commands.Cog):
         embed.set_thumbnail(url=icon)
         embed.add_field(name='O usuário', value=f" {user} deixou o servidor.\nEntrou no servidor {user_joined}", inline=True)
         embed.add_field(name="Data de criação da conta: ", value=user_date, inline=False)
-        embed.set_footer(text=f"ID: {member.id} | Data: {horario}", icon_url=footer)
+        embed.set_footer(text=f"ID: {member.id} | Data: {horario}", icon_url=member.guild.icon.url)
         await logs_channel.send(embed=embed)
+        await members_channel.send(embed=embed)
 
 
     # Logs de banimento
