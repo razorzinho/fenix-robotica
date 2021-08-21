@@ -4,7 +4,11 @@ from discord.ext import commands
 from data import settings
 from modules.storage import tickets, cargos, info
 
-class Reactions(commands.Cog):
+attributes = {
+    'hidden': True
+}
+
+class Reactions(commands.Cog, name='Reações', description='''Módulo que cria mensagens com função de dar cargos ao reagir às suas mensagens. Módulo oculto.''', command_attrs=attributes):
 
     def __init__(self, client):
         self.client = client
@@ -14,7 +18,7 @@ class Reactions(commands.Cog):
         rules_channel = self.client.get_channel(tickets.rules_channel_id)
         await rules_channel.send(f'<@{member.id}>', delete_after=1.0)
 
-    @commands.command(hidden=True)
+    @commands.command()
     async def rules(self, ctx):
         channel = ctx.channel
         embed = discord.Embed(colour=tickets.report_ticket_colour)

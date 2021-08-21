@@ -6,7 +6,7 @@ from modules.storage import logs, cargos
 from data import settings
 url = settings.url
 
-class Logs(commands.Cog):
+class Logs(commands.Cog, name='Logs', description='''Módulo de registro de eventos do bot e do servidor. Não possui comandos.'''):
 
     def __init__(self, client):
         self.client = client  
