@@ -2,34 +2,21 @@ import discord
 from discord.ext import commands
 from data import settings
 title = settings.embed_title
-from modules.storage import teste
-avatar_roles = teste.avatar_roles
 
-class Teste(commands.Cog):
+class Teste(commands.Cog, name='Teste', description='''Categoria de comandos para testes do bot. Não possui quaisquer comandos de real utilidade aos membros do Discord.'''):
 
     def __init__(self, client):
         self.client = client
 
     # Comandos
-    @commands.command(aliases=['ping', 'teste'])
-    async def ping_pong(self, ctx):
-        await ctx.message.reply(f'Pong! :ping_pong: \n**Ping médio:** `{round(self.client.latency*1000)} ms`')
+    @commands.command(aliases=['ping_pong', 'teste'], help='Informa o ping atual de resposta do bot.', usage=f'{settings.bot_prefix}ping', hidden=True)
+    @commands.guild_only()
+    async def ping(self, ctx):
+        await ctx.reply(f'Pong! :ping_pong: \n**Ping médio:** `{round(self.client.latency*1000)} ms`')
 
-    @commands.command(name="avatar", help="Envia a foto de perfil de um usuário.")
-    @commands.has_any_role(teste.avatar_roles)
-    async def avatar(self, ctx, member: discord.Member=None):
-        if not member:
-            member = ctx.author
-        pfp = member.avatar_url
-        icon = ctx.guild.icon_url
-        embed=discord.Embed(color=0xff0000)
-        embed.set_author(name=f"Avatar de {member}", url=pfp)
-        embed.set_image(url=pfp)
-        embed.set_footer(text=f"Pedido por {ctx.author.icon_url}", icon_url=icon)
-        await ctx.send(embed=embed)
-
-    @commands.command(aliases=['repita', 'diga'])
-    async def repetir(self, ctx, arg):
+    @commands.command(aliases=['repetir', 'repita', 'diga'], help='Faz a Nyx enviar uma mensagem copiando a frase utilizada no comando.', usage=f'{settings.bot_prefix}echo *frase*')
+    @commands.guild_only()
+    async def echo(self, ctx, arg):
         await ctx.send(arg)
 
 def setup(client):
