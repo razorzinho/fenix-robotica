@@ -9,6 +9,11 @@ attributes = {
     'usage': f'{settings.bot_prefix}help (*comando|categoria*)'
 }
 
+def comandos(cog):
+        for command in cog.walk_commands():
+            if not command.hidden:
+                return command
+
 class CustomHelpCommand(commands.HelpCommand):
 
     def __init__(self):
@@ -21,20 +26,16 @@ class CustomHelpCommand(commands.HelpCommand):
         embed.set_author(name=f'Ajuda Fênix Robótica: comandos', url=settings.url, icon_url=ctx.guild.icon.url)
         embed.set_footer(text=f'Use ?help *comando|categoria* para ver um guia mais detalhado.', icon_url=ctx.author.avatar.url)
         for cog in mapping:
+            comandos = []
             if cog is None: 
                 continue
-            comandos = []
             for command in mapping[cog]:
-                aliases = []
                 if not command.hidden:
-                    comandos.append(command.name)
-                if command.aliases is not None:
-                    aliases.append(command.aliases)
-                else:
-                    aliases = ''
+                    command_text = command.qualified_name + " | " + ", ".join(command.aliases) if command.aliases else command.qualified_name
+                    comandos.append(command_text)
             if not comandos:
                 continue
-            embed.add_field(name=f'{cog.qualified_name}:', value="\n".join(map(str,comandos)) +' ou: '+ " , ".join(map(str,aliases)), inline=False)
+            embed.add_field(name=f'{cog.qualified_name}:', value="\n".join(comandos), inline=False)
         await ctx.send(embed=embed)
 
     @commands.guild_only()
@@ -43,14 +44,9 @@ class CustomHelpCommand(commands.HelpCommand):
         embed = discord.Embed(colour=help.cog_help_colour, description=f'**{cog.description}**')
         embed.set_author(name=f'Ajuda Fênix Robótica: categoria {cog.qualified_name}', url=settings.url, icon_url=ctx.guild.icon.url)
         embed.set_footer(text=f'Requisitado por {ctx.author}. | Use ?help *comando|categoria* para exibir este guia.', icon_url=ctx.author.avatar.url)
-        aliases = []
         for command in cog.walk_commands():
-            if command.aliases:
-                aliases.append(command.aliases)
-                embed.add_field(name=f'{command.qualified_name} |' ', '.join(map(str,command.aliases)), value=f'''{command.description}
-            **Uso:** {command.usage}''', inline=False)
-            else:
-                embed.add_field(name=f'{command.qualified_name}', value=f'''{command.description}
+            if not command.hidden:
+                embed.add_field(name=f'{command.qualified_name} | ' + ', '.join(command.aliases), value=f'''{command.description}
             **Uso:** {command.usage}''', inline=False)
         await ctx.send(embed=embed)
 
@@ -66,9 +62,11 @@ class CustomHelpCommand(commands.HelpCommand):
         embed = discord.Embed(colour=help.command_help_colour, description=f'**{command.help}**')
         embed.set_author(name=f'Ajuda Fênix Robótica: comando {command.qualified_name} | {command.cog_name}', url=settings.url, icon_url=ctx.guild.icon.url)
         embed.set_footer(text=f'Requisitado por {ctx.author} | Use ?help para ver a lista completa de comandos e categorias.', icon_url=ctx.author.avatar.url)
+        if command.hidden:
+            embed.add_field(name='Este é um comando oculto por padrão.', value=settings.empty_value)
         if command.aliases:
             embed.add_field(name='Outros formas do comando:', value=', '.join(map(str,command.aliases)), inline=False)
-        embed.add_field(name='Uso:', value=command.usage, inline=False)
+        embed.add_field(name='Uso:', value=f'''{command.usage}''', inline=False)
         await ctx.send(embed=embed)
 
     @commands.guild_only()
