@@ -17,6 +17,7 @@ class Mod(commands.Cog, name='Moderação', description='''Comandos especiais de
 
     # Apagar mensagens enviadas em canais restritos por usuários que não sejam bots ou não venham de webhooks:
     @commands.Cog.listener()
+    @commands.guild_only()
     async def on_message(self, message):
         if not message.author.bot and message.channel.id in logs.not_messegeable and message.webhook_id is None:
             logs_channel = self.client.get_channel(logs.moderation_logs_channel_id)
@@ -32,7 +33,8 @@ class Mod(commands.Cog, name='Moderação', description='''Comandos especiais de
             await message.delete()
 
     # Comando de limpeza; apaga a quantidade especificada de mensagens. Só pode ser usado com mais de uma mensagem.
-    @commands.command(help='''Apaga a quantidade dada de mensagens no canal em que foi utilizado. Somente membros Staff podem usá-lo.''', usage=f'{prefix}clear *quantidade*')
+    @commands.command(aliases=['limpar', 'apagar', 'remover'], help='''Apaga a quantidade dada de mensagens no canal em que foi utilizado. Somente membros Staff podem usá-lo.''', usage=f'{prefix}clear *quantidade*')
+    @commands.guild_only()
     @commands.has_any_role(*admin)
     async def clear(self, ctx, amount=0):
         logs_channel = self.client.get_channel(logs.message_logs_channel_id)
@@ -68,7 +70,8 @@ class Mod(commands.Cog, name='Moderação', description='''Comandos especiais de
             await logs_channel.send(embed=embed, file=file)
             os.remove('./'+arquivo)
 
-    @commands.command(help='''Expulsa o membro mencionado pelo motivo especificado. Somente Administradores podem utilizá-lo.''', usage=f'{prefix}kick *@membro* **motivo**')
+    @commands.command(aliases=['expulsar'], help='''Expulsa o membro mencionado pelo motivo especificado. Somente Administradores podem utilizá-lo.''', usage=f'{prefix}kick *@membro* **motivo**')
+    @commands.guild_only()
     @commands.has_any_role(*admin)
     async def kick(self, ctx, member : discord.Member, *, reason):
         # Mensagem de aviso ao membro que foi punido:
@@ -85,7 +88,8 @@ class Mod(commands.Cog, name='Moderação', description='''Comandos especiais de
         await member.kick(reason=reason)
         await ctx.send(f'O usuário {member.mention} foi expulso do servidor.')
 
-    @commands.command(help='''Bane o membro mencionado pelo motivo especificado. Somente Administradores podem utilizá-lo.''', usage=f'{prefix}ban *@membro* **motivo**')
+    @commands.command(aliases=['banir'], help='''Bane o membro mencionado pelo motivo especificado. Somente Administradores podem utilizá-lo.''', usage=f'{prefix}ban *@membro* **motivo**')
+    @commands.guild_only()
     @commands.has_any_role(*admin)
     async def ban(self, ctx, member:discord.Member, *, reason):
         autor = ctx.message.author
@@ -101,7 +105,8 @@ class Mod(commands.Cog, name='Moderação', description='''Comandos especiais de
         await member.ban(reason=reason)
         await ctx.send(f'O usuário {member.mention} foi banido do servidor.')
     
-    @commands.command(help='''Desbane o usuário portador do *ID/nome#tag* especificado. Somente Administradores podem utilizá-lo.''', usage=f'{prefix}unban *ID/Nome#tag*')
+    @commands.command(aliases=['desbanir'], help='''Desbane o usuário portador do *ID/nome#tag* especificado. Somente Administradores podem utilizá-lo.''', usage=f'{prefix}unban *ID/Nome#tag*')
+    @commands.guild_only()
     @commands.has_any_role(*admin)
     async def unban(self, ctx, *, member):
         banned_users = await ctx.guild.bans()

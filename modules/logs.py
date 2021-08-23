@@ -23,10 +23,9 @@ class Logs(commands.Cog, name='Logs', description='''Módulo de registro de even
                         admins_ids.append(member.id)
         print(f'{self.client.user} on-line. \nCriado por {settings.author_name} -> {settings.author_id}')
         logs_channel = self.client.get_channel(logs.bot_logs_channel_id)
-        cor = logs.bot_online_colour
         now = datetime.now()
         horario = now.strftime("às %H:%M:%S em %d/%m/%Y")
-        embed = discord.Embed(colour=cor)
+        embed = discord.Embed(colour=logs.bot_online_colour)
         embed.set_author(name=self.client.user.name, url=settings.url_panel, icon_url=self.client.user.avatar.url)
         embed.add_field(name='Prefixo utilizado: ', value=f'[{settings.bot_prefix}]')
         embed.add_field(name='Data de criação: ', value=f'{guild.created_at.__format__("às %H:%M:%S em %d/%m/%Y")}', inline=False)
