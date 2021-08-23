@@ -1,9 +1,9 @@
 rules_channel_id = 777439182154760202
-rules_colour = 1674649      # Laranja
-welcome_colour = 8789637    # Roxo
-utilidades_colour = 5067973 # Azul
+rules_colour = 0xFC5603      # Laranja
+welcome_colour = 0x861E85    # Roxo
+utilidades_colour = 0x4D54C5 # Azul
 roles_id = [
-    
+
 ]
 chefes = [
     485865987602644992, # Faeel
