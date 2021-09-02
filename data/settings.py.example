@@ -37,12 +37,6 @@ status = ''
 # Nome/descrição da atividade padrão do BOT:
 activity_name = ''
 
-# Nome do autor do BOT
-author_name = 'Razor'
-
-# ID do autor do BOT
-author_id = '301337199406874624'
-
 #-----------------------------------------------------------------------------------------------#
 # Configurações do banco de dados:
 
@@ -95,6 +89,9 @@ embed_title = ''
 
 # Cor do Embed de ajuda:
 help_embed_colour = 16711680
+
+# Formato de datas:
+date_format = "às %H:%M:%S em %d/%m/%Y"
 
 # Valor de string para fazer um campo de embed ficar vazio:
 empty_value = '\u200b'

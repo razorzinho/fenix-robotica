@@ -21,7 +21,12 @@ class Logs(commands.Cog, name='Logs', description='''Módulo de registro de even
                 for role in member.roles:
                     if role.id in cargos.admin_roles_id:
                         admins_ids.append(member.id)
-        print(f'{self.client.user} on-line. \nCriado por {settings.author_name} -> {settings.author_id}')
+        info = await self.client.application_info()
+        print(f'{self.client.user} está on-line.')
+        if info.team:
+            print(f'Criado por {info.team.name}\n '+ '\n'.join(map(str, info.team.members)))
+        else:
+            print(f'Criado por {info.owner}')     
         logs_channel = self.client.get_channel(logs.bot_logs_channel_id)
         now = datetime.now()
         horario = now.strftime("às %H:%M:%S em %d/%m/%Y")
