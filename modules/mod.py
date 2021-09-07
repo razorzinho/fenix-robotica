@@ -116,27 +116,8 @@ class Mod(commands.Cog, name='Moderação', description='''Comandos especiais de
             user = ban_entry.user
         if (user.name, user.discriminator) == (member_name, member_discriminator):
             await ctx.guild.unban(user)
-<<<<<<< HEAD
-            autor = ctx.message.author
-=======
->>>>>>> 18138c2ff833f935cdfae193d5f7e62a68022340
             await ctx.send(f'O usuário {user.mention} foi desbanido do servidor.')
             return
 
-<<<<<<< HEAD
-    @unban.error
-    async def unban_error(self, ctx, error):
-<<<<<<< HEAD
-        if isinstance(error, commands.MissingPermissions):
-=======
-        if isinstance(error, commands.MissingRole):
->>>>>>> 18138c2ff833f935cdfae193d5f7e62a68022340
-            await ctx.channel.purge(limit=1)
-            await ctx.send(f'**Você não tem permissão para usar este comando, {ctx.author.mention}.**', delete_after=5.0)
-        elif  isinstance(error, commands.MissingRequiredArgument()):
-            await ctx.send(f'**{ctx.message.author.mention}, você deve especificar o nome do usuário que será desbanido.**', delete_after=5.0)
-
-=======
->>>>>>> dev
 def setup(client):
     client.add_cog(Mod(client))
