@@ -7,8 +7,8 @@ from data.settings import bot_prefix
 def setup(client):
 
     # Comando de desativar o bot de forma segura; NÃO FECHAR O TERMINAL, SOMENTE DESLIGÁ-LO POR ESTE COMANDO.
-    @client.command(aliases=['desligar', 'desconectar'], hiddden=True, help=f'\"{bot_prefix}kill *motivo*\" Me desliga pelo motivo especificado. Somente Programadores Sênior podem utilizá-lo.')
-    @commands.has_role(cargos.admin_roles_id[0])
+    @app_commands.command(aliases=['desligar', 'desconectar'], hiddden=True, help=f'\"{bot_prefix}kill *motivo*\" Me desliga pelo motivo especificado. Somente Programadores Sênior podem utilizá-lo.')
+    @app_commands.checks.has_role(cargos.admin_roles_id[0])
     async def kill(ctx, *, reason='Sem motivo.'):
         cor = logs.bot_logout_colour
         logs_channel = client.get_channel(logs.bot_logs_channel_id)
