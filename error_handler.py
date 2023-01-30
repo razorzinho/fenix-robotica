@@ -1,18 +1,16 @@
 import discord
+from modules.storage import logs
 from discord.ext import commands
-
-file = open("./config.json")
-config = json.load(file,)
 
 def setup(client):
     # Cuidar de erros relacionados a comandos
     @client.event
     async def on_command_error(ctx, error):
-        logs_channel = client.get_channel(config["client"]["logs_channel"])
+        logs_channel = client.get_channel(logs.bot_logs_channel_id)
         if isinstance(error, commands.MissingRole):
             await ctx.reply(f"Ops, parece que você não tem o cargo necessário para utilizar este comando, {ctx.author.name}.")
         elif isinstance(error, commands.MissingAnyRole):
-            await ctx.reply(f"Ops, parece que você não tem o cargo necessário para utilizar este comando, {ctx.author.name}.")
+            await ctx.reply(f"Ops, parece que você não tem um cargo necessário para utilizar este comando, {ctx.author.name}.")
         elif isinstance(error, commands.MissingRequiredArgument):
             await ctx.reply(f"Ops, parece que você errou o formato deste comando, {ctx.author.name}. Utilize o comando ?help comando para saber como se utiliza.")
         elif isinstance(error, commands.MissingPermissions):

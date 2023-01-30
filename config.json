@@ -1,80 +1,9 @@
 {
     "client": {
         "prefix": "?",
-        "status": "https://fenixempire.net.br",
-        "guilds_commands": {
-            "1010943771451592714": [
-
-            ],
-            "382520701594107905": [
-                
-            ]
-        }
+        "status": "Buscando servidores..."
     },
-    "ticket_system": {
-        "guilds": {
-            "1010943771451592714": {
-                "tickets": {
-                    "support": {
-                        "mode": "channel",
-                        "main_channel": ,
-                        "active_tickets": {
-                            "name": "ATIVO-{author}-{id}-{handler}-{timestamp}",
-                            "category_id": 1012858147960012810
-                        },
-                        "inactive_tickets": {
-                            "name": "FECHADO-{author}-{id}-{handler}-{timestamp}",
-                            "category_id": 1012858147960012810
-                        },
-                        "message": {
-                            "id": 0,
-                            "title": "",
-                            "fields": {
-
-                            },
-                            "options": {
-                                "create": "Requisitar suporte"
-                            }
-                        }
-                    }
-                }
-            },
-            "382520701594107905": {
-                "tickets": {
-                    "report": {
-                        "mode": "channel",
-                        "main_channel": 1012858898480369766,
-                        "active_tickets": {
-                            "name": "ATIVO-{author}-{id}-{handler}-{timestamp}",
-                            "category_id": 1012858147960012810
-                        },
-                        "inactive_tickets": {
-                            "name": "FECHADO-{author}-{id}-{handler}-{timestamp}",
-                            "category_id": 1012858147960012810
-                        },
-                        "message": {
-                            "id": 0,
-                            "title": "RECLAMAÇÕES | DENÚNCIAS",
-                            "fields": {
-                                "instructions": {
-                                    "title": "Instruções:",
-                                    "content": "Clique no botão abaixo 📩 para criar um ticket de denúncia."
-                                },
-                                "description": {
-                                    "title": "NOTA:",
-                                    "content": "SOMENTE CRIE UM NOVO TICKET APÓS A LEITURA DA MENSAGEM ACIMA."
-                                }
-                            },
-                            "options": {
-                                "create": "Fazer denúncia"
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    },
-    "join_roles": {
+    "join_module": {
         "1010943771451592714": {
             "log_channel_id": 1041432403765366906,
             "roles_id": [
@@ -98,6 +27,41 @@
             ]
         }
     },
+    "query_module": {
+        "delay": 120,
+        "client_status_server_ip": "131.196.196.197:27380",
+        "server_info_fields": {
+            "info_description": "**Informações do servidor:**",
+            "players_description": "**Nome | Pontuação | Tempo de conexão (horas)**",
+            "server_name": "Servidor:",
+            "server_game_name": "Jogo:",
+            "server_ping": "Ping médio do servidor:",
+            "server_gamemode": "Modo de jogo:",
+            "server_map": "Mapa atual:",
+            "server_os": "Sistema operacional do servidor:",
+            "server_type": "Tipo de servidor:",
+            "server_visibility": "Visibilidade do servidor:"
+        },
+        "382520701594107905": {
+            "constant_status": {
+                "servers": {
+                    "131.196.196.197:27380": {
+                        "channel_id": 970731983103725588,
+                        "info_embed_colour": 11337728,
+                        "info_message_id": 1055619675960135741,
+                        "players_embed_colour": 11337728,
+                        "players_message_id": 1055619677314891848
+                    }
+                }
+            },
+            "status": {
+                "server_ip": {
+                    "ttt": "131.196.196.197:27380",
+                    "jailbreak": "131.196.196.197:27410"
+                }
+            }
+        }
+    },
     "moderation": {
         "allowed_roles_id": [
             1041422699039297570,
@@ -113,32 +77,187 @@
             "log_channel_id": 564311846459539466
         }
     },
-    "messages": {
+    "ticket_system": {
         "1010943771451592714": {
-            "languages": {
-                "channel_id": 1041432380998680626,
-                "message_id": 1041434538015989892,
-                "title": "Cargos de linguagens e bibliotecas de programação",
-                "description": "**Reaja nesta mensagem de acordo com os cargos que deseja adquirir (ou remover) referentes a linguagens de programação que você entende e/ou domina**"
-            },
-            "tech": {
-                "channel_id": 1041432380998680626,
-                "message_id": 1041453507661791352,
-                "title": "Cargos de tecnologias diversas",
-                "description": "**Reaja nesta mensagem de acordo com os cargos que deseja adquirir (ou remover) referentes a tecnologias que você entende e/ou domina**"
+            "donations": {
+                "category_id": 123456788901234567,
+                "message_id": 123456788901234567,
+                "mode": "threads",
+                "active_category_id": 123456788901234567,
+                "closed_category_id": 123456788901234567,
+                "active_ticket_name_template": "{author}-{date}-{id}",
+                "closed_ticket_name_template": "{author}-{date}-{id}",
+                "ticket_message_fields": {
+                    "title": "",
+                    "description": "",
+                    "fields": {
+                        "1": {
+                            "title": "",
+                            "content": "",
+                            "inline": true
+                        },
+                        "2": {
+                            "title": "",
+                            "content": "",
+                            "inline": true
+                        }
+                    },
+                    "footer": ""
+                },
+                "opened_first_message": "",
+                "closed_message": "Ticket encerrado por {admin}. Para reabri-lo, clique no botão reabrir.",
+                "open_ticket_button_text": "DOAR",
+                "open_ticket_button_colour": 8847405,
+                "close_ticket_button_text": "FECHAR",
+                "close_ticket_button_colour": 8847405,
+                "reopen_ticket_button_text": "REABRIR",
+                "reopen_ticket_button_colour": 8847405,
+                "allowed_roles_id": []
             }
         },
         "382520701594107905": {
-            "rules": {
-                "channel_id": 382521241296306177,
-                "title": "Regras do Discord",
-                "description": "",
-                "fields": {}
+            "donations": {
+                "category_id": 123456788901234567,
+                "message_id": 123456788901234567,
+                "mode": "threads",
+                "active_category_id": 123456788901234567,
+                "closed_category_id": 123456788901234567,
+                "active_ticket_name_template": "{author}-{date}-{id}",
+                "closed_ticket_name_template": "{author}-{date}-{id}",
+                "ticket_message_fields": {
+                    "title": "",
+                    "description": "",
+                    "fields": {
+                        "1": {
+                            "title": "",
+                            "content": "",
+                            "inline": true
+                        },
+                        "2": {
+                            "title": "",
+                            "content": "",
+                            "inline": true
+                        }
+                    },
+                    "footer": ""
+                },
+                "opened_first_message": "",
+                "closed_message": "Ticket encerrado por {admin}. Para reabri-lo, clique no botão reabrir.",
+                "open_ticket_button_text": "DOAR",
+                "open_ticket_button_colour": 8847405,
+                "close_ticket_button_text": "FECHAR",
+                "close_ticket_button_colour": 8847405,
+                "reopen_ticket_button_text": "REABRIR",
+                "reopen_ticket_button_colour": 8847405,
+                "allowed_roles_id": []
             },
-            "tags": {
+            "reports": {
+                "category_id": 123456788901234567,
+                "message_id": 123456788901234567,
+                "mode": "threads",
+                "active_category_id": 123456788901234567,
+                "closed_category_id": 123456788901234567,
+                "active_ticket_name_template": "{author}-{date}-{id}",
+                "closed_ticket_name_template": "{author}-{date}-{id}",
+                "ticket_message_fields": {
+                    "title": "",
+                    "description": "",
+                    "fields": {
+                        "1": {
+                            "title": "",
+                            "content": "",
+                            "inline": true
+                        },
+                        "2": {
+                            "title": "",
+                            "content": "",
+                            "inline": true
+                        }
+                    },
+                    "footer": ""
+                },
+                "opened_first_message": "",
+                "closed_message": "Ticket encerrado por {admin}. Para reabri-lo, clique no botão reabrir.",
+                "open_ticket_button_text": "DOAR",
+                "open_ticket_button_colour": 8847405,
+                "close_ticket_button_text": "FECHAR",
+                "close_ticket_button_colour": 8847405,
+                "reopen_ticket_button_text": "REABRIR",
+                "reopen_ticket_button_colour": 8847405,
+                "allowed_roles_id": []
+            },
+            "ban_appeal": {
+                "category_id": 123456788901234567,
+                "message_id": 123456788901234567,
+                "mode": "threads",
+                "active_category_id": 123456788901234567,
+                "closed_category_id": 123456788901234567,
+                "active_ticket_name_template": "{author}-{date}-{id}",
+                "closed_ticket_name_template": "{author}-{date}-{id}",
+                "ticket_message_fields": {
+                    "title": "",
+                    "description": "",
+                    "fields": {
+                        "1": {
+                            "title": "",
+                            "content": "",
+                            "inline": true
+                        },
+                        "2": {
+                            "title": "",
+                            "content": "",
+                            "inline": true
+                        }
+                    },
+                    "footer": ""
+                },
+                "opened_first_message": "",
+                "closed_message": "Ticket encerrado por {admin}. Para reabri-lo, clique no botão reabrir.",
+                "open_ticket_button_text": "DOAR",
+                "open_ticket_button_colour": 8847405,
+                "close_ticket_button_text": "FECHAR",
+                "close_ticket_button_colour": 8847405,
+                "reopen_ticket_button_text": "REABRIR",
+                "reopen_ticket_button_colour": 8847405,
+                "allowed_roles_id": []
+            }
+        }
+    },
+    "messages": {
+        "1010943771451592714": {
+            "languages": {
+                "colour": 8847405,
+                "channel_id": 1041432380998680626,
+                "message_id": 1052386337283645561,
+                "title": "Cargos de linguagens e bibliotecas de programação",
+                "description": "**Reaja nesta mensagem de acordo com os cargos que deseja adquirir (ou remover) referentes a linguagens de programação que você entende e/ou domina**",
+                "items_title": "||(se estiver faltando uma que você conhece/tem domínio, nos avise para que seja incluída)||"
+            },
+            "tech": {
+                "colour": 4587655,
+                "channel_id": 1041432380998680626,
+                "message_id": 1052386402614124595,
+                "title": "Cargos de tecnologias diversas",
+                "description": "**Reaja nesta mensagem de acordo com os cargos que deseja adquirir (ou remover) referentes a tecnologias que você entende e/ou domina**",
+                "items_title": "||(se estiver faltando uma que você conhece/tem domínio, nos avise para que seja incluída)||"
+            }
+        },
+        "382520701594107905": {
+            "tags1": {
+                "colour": 1935104,
                 "channel_id": 893880842764578836,
-                "title": "Cargos de jogos para organização de partidas",
-                "description": "**Reaja nesta mensagem de acordo com os cargos que deseja adquirir (ou remover)**"
+                "message_id": 1052386192764702750,
+                "title": "Cargos de jogos para organização de partidas (PARTE 1)",
+                "description": "**Reaja nesta mensagem de acordo com os cargos que deseja adquirir (ou remover)**",
+                "items_title": "||(se estiver faltando algum jogo que você conhece/joga, nos avise para que seja incluído)||"
+            },
+            "tags2": {
+                "colour": 4587655,
+                "channel_id": 893880842764578836,
+                "message_id": 1052386269088452668,
+                "title": "Cargos de jogos para organização de partidas (PARTE 2)",
+                "description": "**Reaja nesta mensagem de acordo com os cargos que deseja adquirir (ou remover)**",
+                "items_title": "||(se estiver faltando algum jogo que você conhece/joga, nos avise para que seja incluído)||"
             }
         }
     },
@@ -275,181 +394,186 @@
             }
         },
         "382520701594107905": {
-            "rules": {
-                "white_check_mark": {
-                    "emoji_id": 1049557320377573457,
-                    "role_id": 1234567890123456789,
-                    "description": "Ao reagir nesta mensagem, você atesta que leu e concordou com os termos e regras deste servidor e, caso ocorra alguma transgressão, será punido de forma consciente."
-                }
-            },
-            "tags": {
+            "tags1": {
                 "amogus": {
-                    "emoji_id": 1048010357790228570,
+                    "emoji_id": 1048006963641995324,
                     "role_id": 893663015658999818,
                     "description": "Amogus"
                 },
                 "apex": {
-                    "emoji_id": 1048010391529205760,
+                    "emoji_id": 1048007931263717398,
                     "role_id": 1048017593174331492,
                     "description": "Apex Legends"
                 },
                 "ark": {
-                    "emoji_id": 1048010372474478712,
+                    "emoji_id": 1048006982336008283,
                     "role_id": 741802433105100882,
                     "description": "Ark Survival Evolved"
                 },
                 "battlebit": {
-                    "emoji_id": 1048010420004327445,
+                    "emoji_id": 1048007947332104212,
                     "role_id": 1048017936272605234,
                     "description": "Battlebit Remastered"
                 },
+                "battlefield": {
+                    "emoji_id": 1052384715333701722,
+                    "role_id": 1052383133305151508,
+                    "description": "Battlefield (qualquer um menos o 2042 💩)"
+                },
                 "cod": {
-                    "emoji_id": 1048010437670736042,
+                    "emoji_id": 1048007005165588490,
                     "role_id": 962436803967741963,
                     "description": "Call Of Duty"
                 },
                 "csgo": {
-                    "emoji_id": 1048010443496624180,
+                    "emoji_id": 1048007970774056960,
                     "role_id": 893879378893750282,
                     "description": "Counter Strike: Global Offensive"
                 },
                 "dbd": {
-                    "emoji_id": 1048010450270429224,
+                    "emoji_id": 1048009163508305920,
                     "role_id": 893189445644337202,
                     "description": "Dead By Daylight"
                 },
                 "drg": {
-                    "emoji_id": 1048010482939871312,
+                    "emoji_id": 1048008234809700413,
                     "role_id": 941702242245939250,
                     "description": "Deep Rock Galactic"
                 },
                 "dst": {
-                    "emoji_id": 1048010500354621560,
+                    "emoji_id": 1048009761578307725,
                     "role_id": 937350698876665896,
                     "description": "Don't Starve Together"
                 },
                 "dota": {
-                    "emoji_id": 1048010462249365675,
+                    "emoji_id": 1048007025541513277,
                     "role_id": 1048017449586532412,
                     "description": "Dota 2"
                 },
                 "fall_guys": {
-                    "emoji_id": 1048010520562761801,
+                    "emoji_id": 1048007040737493062,
                     "role_id": 893884707773759559,
                     "description": "Fall Guys"
                 },
+                "football": {
+                    "emoji_id": 1052384350412480613,
+                    "role_id": 1052383150162071662,
+                    "description": "FIFA/PES (jogos de futebol on-line)"
+                },
                 "f1": {
-                    "emoji_id": 1048019848602603670,
+                    "emoji_id": 1048019805569024071,
                     "role_id": 1027763342560997377,
                     "description": "Formula 1"
                 },
                 "fortnite": {
-                    "emoji_id": 1048010534177480835,
+                    "emoji_id": 1048007055803433081,
                     "role_id": 1048017956916957204,
                     "description": "Fortnite"
                 },
                 "gwyf": {
-                    "emoji_id": 1048024796383952989,
+                    "emoji_id": 1048019923684823180,
                     "role_id": 893685722341601391,
                     "description": "Golf With Your Friends"
                 },    
                 "gtav": {
-                    "emoji_id": 1048010545510481920,
+                    "emoji_id": 1048008151074607185,
                     "role_id": 1048017989204717649,
                     "description": "GTA Online"
                 },
                 "guild_wars": {
-                    "emoji_id": 1048010573494878288,
+                    "emoji_id": 1048008410311966770,
                     "role_id": 1048016108214550589,
                     "description": "Guild Wars 2"
                 },            
                 "insurgency": {
-                    "emoji_id": 1048010586228789248,
+                    "emoji_id": 1048008353978257579,
                     "role_id": 1048017856526303294,
                     "description": "Insurgency"
                 },
                 "kf2": {
-                    "emoji_id": 1048010597121405038,
+                    "emoji_id": 1048008310965669979,
                     "role_id": 1007275063466278913,
                     "description": "Killing Floor"
-                },
+                }
+            },
+            "tags2": {
                 "lol": {
-                    "emoji_id": 1048010611885359216,
+                    "emoji_id": 1048007068914810990,
                     "role_id": 1048017584219492402,
                     "description": "League of Legends"
                 },
                 "l4d": {
-                    "emoji_id": 1048010605195427840,
+                    "emoji_id": 1048010176080396370,
                     "role_id": 937350586045722715,
                     "description": "Left 4 Dead"
                 },
                 "minecraft": {
-                    "emoji_id": 1048010631472746546,
+                    "emoji_id": 1048007083401945089,
                     "role_id": 911307390484381707,
                     "description": "Minecraft"
                 },
                 "overcooked": {
-                    "emoji_id": 1048010640243036231,
+                    "emoji_id": 1048007098946043985,
                     "role_id": 1048016763608109076,
                     "description": "Overcooked"
                 },
                 "overwatch": {
-                    "emoji_id": 1048010656760213514,
+                    "emoji_id": 1048007119418429550,
                     "role_id": 1031230132364517438,
                     "description": "Overwatch"
                 },
                 "phasmophobia": {
-                    "emoji_id": 1048010684362932234,
+                    "emoji_id": 1048007135201591397,
                     "role_id": 893886056565473321,
                     "description": "Phasmophobia"
                 },
                 "project_zomboid": {
-                    "emoji_id": 1048010695398133770,
+                    "emoji_id": 1048008287481757726,
                     "role_id": 999062249228488835,
                     "description": "Project Zomboid"
                 },
                 "pummel_party": {
-                    "emoji_id": 1048010708354355220,
+                    "emoji_id": 1048008539643318442,
                     "role_id": 893884891203260486,
                     "description": "Pummel Party"
                 },
                 "r6": {
-                    "emoji_id": 1048010720220020737,
+                    "emoji_id": 1048008561852157992,
                     "role_id": 1047999941194301581,
                     "description": "Rainbow Six Siege"
                 },
                 "scp": {
-                    "emoji_id": 1048010734803632198,
+                    "emoji_id": 1048008579334025246,
                     "role_id": 1048011230465511434,
                     "description": "SCP"
                 },
                 "squad": {
-                    "emoji_id": 1048010742445654016,
+                    "emoji_id": 1048010190106148874,
                     "role_id": 1048010925325688983,
                     "description": "Squad"
                 },
                 "stardew_valley": {
-                    "emoji_id": 1048010754382630962,
+                    "emoji_id": 1048007300432003113,
                     "role_id": 894414035053842442,
                     "description": "Stardew Valley"
                 },
                 "swat": {
-                    "emoji_id": 1048015926206931045,
+                    "emoji_id": 1048015869948731472,
                     "role_id": 1047999901205807194,
                     "description": "SWAT 4"
                 },
                 "tf2": {
-                    "emoji_id": 1048010766726467585,
+                    "emoji_id": 1048008645503373332,
                     "role_id": 1048017523787964547,
                     "description": "Team Fortress 2"
                 },
                 "ttt": {
-                    "emoji_id": 1048010775479988304,
+                    "emoji_id": 1048007171700437033,
                     "role_id": 939649591668789279,
-                    "description": "Trouble in Terrorist Town"
+                    "description": "Trouble in Terrorist Town (nosso servidor: steam://connect/131.196.196.197:27380)"
                 },
                 "valorant": {
-                    "emoji_id": 1048010787299536966,
+                    "emoji_id": 1048007186506338316,
                     "role_id": 970310169621843988,
                     "description": "Valorant"
                 }

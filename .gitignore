@@ -1,5 +1,6 @@
 __pycache__
 */__pycache__
 terminal.log
-cache.txt
-data/*.py
+safe.py
+sensitive/*
+cogs/sensitive/*
