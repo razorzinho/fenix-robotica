@@ -14,16 +14,16 @@ config = json.load(file,)
 env = dotenv_values(".env")
 
 os = {
-    [76]: "Linux",
-    [108]: "Linux",
-    [119]: "Windows",
-    [109]: "MacOS",
-    [111]: "MacOS"
+    "76": "Linux",
+    "108": "Linux",
+    "119": "Windows",
+    "109": "MacOS",
+    "111": "MacOS"
 }
 
 games = {
-    [4000]: "Garry's Mod",
-    [730]: "Counter Strike: Global Offensive"
+    "4000": "Garry's Mod",
+    "730": "Counter Strike: Global Offensive"
 }
 
 gamemodes = {
@@ -32,15 +32,15 @@ gamemodes = {
 }
 
 type = {
-    [68]: "Servidor dedicado",
-    [100]: "Servidor dedicado",
-    [108]: "Servidor não dedicado",
-    [112]: "SourceTV"
+    "68": "Servidor dedicado",
+    "100": "Servidor dedicado",
+    "108": "Servidor não dedicado",
+    "112": "SourceTV"
 }
 
 visibility = {
-    [0]: "Público",
-    [1]: "Protegido por senha"
+    "0": "Público",
+    "1": "Protegido por senha"
 }
 
 # "131.196.196.197:27410": {
